@@ -102,6 +102,7 @@ namespace MyChess
                 Console.ForegroundColor = ConsoleColor.White;
             }
         }
+        
         public void Render()
         {
             RenderLegend();
