@@ -7,10 +7,13 @@ namespace MyChess
         static void Main(string[] args)
         {
             ConsoleFontHelper.Init();
-            ChessBoard cb = new ChessBoard();
-            cb.Render();
-            cb.Board.ForEach(p=>p.Render());
-            Console.ReadKey();
+            ChessBoard.CBoard.Render();
+            ChessBoard.CBoard.Board.ForEach(p => p.Render());
+        }
+        private static void AskInput()
+        {
+            Console.SetCursorPosition(0, 18);
+            Console.ReadLine();
         }
     }
 }

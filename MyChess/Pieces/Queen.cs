@@ -14,29 +14,29 @@ namespace MyChess.Pieces
         {
             // Look right up
             for (byte i = 1; ; i++)
-                if (CheckAndInsert(i, i)) break;
+                if (!CheckAndInsert(i, i)) break;
             // Look left up
             for (byte i = 1; ; i++)
-                if (CheckAndInsert(-i, i)) break;
+                if (!CheckAndInsert(-i, i)) break;
             // Look right down
             for (byte i = 1; ; i++)
-                if (CheckAndInsert(i, -i)) break;
+                if (!CheckAndInsert(i, -i)) break;
             // Look left down
             for (byte i = 1; ; i++)
-                if (CheckAndInsert(-i, -i)) break;
+                if (!CheckAndInsert(-i, -i)) break;
 
             // Look right
             for (byte i = 1; ; i++)
-                if (CheckAndInsert(0, i)) break;
+                if (!CheckAndInsert(0, i)) break;
             // Look left
             for (byte i = 1; ; i++)
-                if (CheckAndInsert(0, -i)) break;
+                if (!CheckAndInsert(0, -i)) break;
             // Look up
             for (byte i = 1; ; i++)
-                if (CheckAndInsert(i, 0)) break;
+                if (!CheckAndInsert(i, 0)) break;
             // Look down
             for (byte i = 1; ; i++)
-                if (CheckAndInsert(-i, 0)) break;
+                if (!CheckAndInsert(-i, 0)) break;
         }
 
         public override char ChessChar => '♕';

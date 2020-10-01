@@ -9,8 +9,17 @@ namespace MyChess
     public class ChessBoard : IRender
     {
         private static ChessBoard _board;
-        public static ChessBoard CBoard => _board ??= new ChessBoard();
-        public ChessBoard()
+        public static ChessBoard CBoard
+        {
+            get
+            {
+                if (_board != null) return _board;
+                _board = new ChessBoard();
+                _board.Board.ForEach(p => p.RecalculateValidMoves());
+                return _board;
+            }
+        }
+        private ChessBoard()
         {
             Board = new List<ChessPiece>()
             {
