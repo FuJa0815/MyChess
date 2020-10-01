@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace MyChess
@@ -15,7 +16,10 @@ namespace MyChess
         public PlayerColor Owner { get; }
         public ChessPosition CurrentPosition { get; protected set; }
         public List<ChessPosition> ValidMoves { get; protected set; } = new List<ChessPosition>();
-        public abstract void RecalculateValidMoves();
+        public virtual void RecalculateValidMoves()
+        {
+            ValidMoves.Clear();
+        }
         public bool CanMove(ChessPosition target) => ValidMoves.Contains(target);
         public void Move(ChessPosition target)
         {
@@ -31,6 +35,22 @@ namespace MyChess
             Console.Write($" {(Owner == PlayerColor.WHITE ? ChessChar : (char)(ChessChar + 6))}");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        protected bool CheckAndInsert(int xOff, int yOff)
+        {
+            var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff));
+            if (!ChessBoard.CBoard.IsInBoard(pos)) return false;
+            // TODO: CheckmateCheck
+            var b = ChessBoard.CBoard[pos];
+            if (b == default)
+            {
+                ValidMoves.Add(pos);
+                return true;
+            }
+            if (b.Owner == Owner) return false;
+            ValidMoves.Add(pos);
+            return false;
         }
     }
 }

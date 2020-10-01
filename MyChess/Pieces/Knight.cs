@@ -12,7 +12,17 @@ namespace MyChess.Pieces
 
         public override void RecalculateValidMoves()
         {
-            throw new NotImplementedException();
+            CheckAndInsert(-2, -1);
+            CheckAndInsert(-2, 1);
+
+            CheckAndInsert(2, -1);
+            CheckAndInsert(2, 1);
+
+            CheckAndInsert(-1, 2);
+            CheckAndInsert( 1, 2);
+
+            CheckAndInsert(-1, -2);
+            CheckAndInsert( 1, -2);
         }
 
         public override char ChessChar => '♘';

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MyChess.Pieces;
 
@@ -7,6 +8,8 @@ namespace MyChess
 {
     public class ChessBoard : IRender
     {
+        private static ChessBoard _board;
+        public static ChessBoard CBoard => _board ??= new ChessBoard();
         public ChessBoard()
         {
             Board = new List<ChessPiece>()
@@ -47,6 +50,10 @@ namespace MyChess
             };
         }
         public List<ChessPiece> Board { get; }
+        public ChessPiece this[ChessPosition c]
+        {
+            get => Board.FirstOrDefault(p=>p.CurrentPosition.Equals(c));
+        }
 
         private readonly string[] boardText = {
             "+-------------------------------+",
@@ -91,5 +98,6 @@ namespace MyChess
             RenderLegend();
             RenderBoard();
         }
+        public bool IsInBoard(ChessPosition p) => p.X >= 1 && p.X <= 8 && p.Y >= 1 && p.Y <= 8;
     }
 }

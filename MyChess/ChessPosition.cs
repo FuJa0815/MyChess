@@ -16,5 +16,13 @@ namespace MyChess
         public byte X { get; set; }
         [Range(1, 8, ErrorMessage = "Out of range")]
         public byte Y { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is ChessPosition cp)) return false;
+            return cp.X == X && cp.Y == Y;
+        }
+
+        public override int GetHashCode() => HashCode.Combine(X, Y);
     }
 }
