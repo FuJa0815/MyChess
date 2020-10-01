@@ -22,8 +22,8 @@ namespace MyChess
             if (!CanMove(target)) throw new ArgumentException("Invalid target");
             CurrentPosition = target;
         }
-        public abstract char         ChessChar       { get; }
-        public          void         Render()
+        public abstract char ChessChar { get; }
+        public void Render()
         {
             Console.ForegroundColor = Owner == PlayerColor.BLACK ? ConsoleColor.Black : ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Gray;

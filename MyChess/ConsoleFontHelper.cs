@@ -7,6 +7,8 @@ namespace MyChess
 {
     public static class ConsoleFontHelper
     {
+        public const ushort FONT_SIZE = 50;
+
         public static void Init()
         {
             SetConsoleFont("NSimSun");
@@ -17,12 +19,12 @@ namespace MyChess
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         internal unsafe struct CONSOLE_FONT_INFO_EX
         {
-            internal       uint  cbSize;
-            internal       uint  nFont;
-            internal       COORD dwFontSize;
-            internal       int   FontFamily;
-            internal       int   FontWeight;
-            internal fixed char  FaceName[LF_FACESIZE];
+            internal uint cbSize;
+            internal uint nFont;
+            internal COORD dwFontSize;
+            internal int FontFamily;
+            internal int FontWeight;
+            internal fixed char FaceName[LF_FACESIZE];
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -38,15 +40,15 @@ namespace MyChess
             }
         }
 
-        private const  int    STD_OUTPUT_HANDLE    = -11;
-        private const  int    TMPF_TRUETYPE        = 4;
-        private const  int    LF_FACESIZE          = 32;
+        private const int STD_OUTPUT_HANDLE = -11;
+        private const int TMPF_TRUETYPE = 4;
+        private const int LF_FACESIZE = 32;
         private static IntPtr INVALID_HANDLE_VALUE = new IntPtr(-1);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern bool SetCurrentConsoleFontEx(
-            IntPtr                   consoleOutput,
-            bool                     maximumWindow,
+            IntPtr consoleOutput,
+            bool maximumWindow,
             ref CONSOLE_FONT_INFO_EX consoleCurrentFontEx);
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -56,7 +58,7 @@ namespace MyChess
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern int SetConsoleFont(
             IntPtr hOut,
-            uint   dwFontNum
+            uint dwFontNum
         );
 
         public static unsafe void SetConsoleFont(string fontName)
@@ -67,14 +69,14 @@ namespace MyChess
                 if (hnd != INVALID_HANDLE_VALUE)
                 {
                     CONSOLE_FONT_INFO_EX newInfo = new CONSOLE_FONT_INFO_EX();
-                    newInfo.cbSize     = (uint)Marshal.SizeOf(newInfo);
+                    newInfo.cbSize = (uint)Marshal.SizeOf(newInfo);
                     newInfo.FontFamily = TMPF_TRUETYPE;
                     IntPtr ptr = new IntPtr(newInfo.FaceName);
                     Marshal.Copy(fontName.ToCharArray(), 0, ptr, fontName.Length);
 
                     // Get some settings from current font.
-                    newInfo.dwFontSize = new COORD(50, 50);
-                    newInfo.FontWeight = 50;
+                    newInfo.dwFontSize = new COORD((short)FONT_SIZE, (short)FONT_SIZE);
+                    newInfo.FontWeight = FONT_SIZE;
                     SetCurrentConsoleFontEx(hnd, false, ref newInfo);
                 }
             }

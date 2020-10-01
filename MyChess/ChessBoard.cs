@@ -46,7 +46,7 @@ namespace MyChess
                 new Pawn(new ChessPosition(8,   7), PlayerColor.BLACK),
             };
         }
-        public List<ChessPiece> Board           { get; }
+        public List<ChessPiece> Board { get; }
 
         private readonly string[] boardText = {
             "+-------------------------------+",
@@ -67,15 +67,15 @@ namespace MyChess
             "|   |   |   |   |   |   |   |   |",
             "+-------------------------------+"
         };
-        public void         Render()
+        private void RenderLegend()
         {
-            // Legend
             Console.SetCursorPosition(0, 1);
             Console.Write("8\n\n7\n\n6\n\n5\n\n4\n\n3\n\n2\n\n1");
             Console.SetCursorPosition(1, 17);
             Console.Write("  a   b   c   d   e   f   g   h");
-
-            // Board
+        }
+        private void RenderBoard()
+        {
             for (var i = 0; i < boardText.Length; i++)
             {
                 Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -85,6 +85,11 @@ namespace MyChess
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
             }
+        }
+        public void Render()
+        {
+            RenderLegend();
+            RenderBoard();
         }
     }
 }
