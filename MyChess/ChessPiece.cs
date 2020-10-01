@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MyChess
 {
-    public abstract class ChessPiece : IRender
+    public abstract class ChessPiece : IRender, IDisposable
     {
         public ChessPiece(ChessPosition startingPosition, PlayerColor owner)
         {
@@ -21,9 +21,8 @@ namespace MyChess
             ValidMoves.Clear();
         }
         public bool CanMove(ChessPosition target) => ValidMoves.Contains(target);
-        public void Move(ChessPosition target)
+        internal void Move(ChessPosition target)
         {
-            if (!CanMove(target)) throw new ArgumentException("Invalid target");
             CurrentPosition = target;
         }
         public abstract char ChessChar { get; }
@@ -51,6 +50,20 @@ namespace MyChess
             if (b.Owner == Owner) return false;
             ValidMoves.Add(pos);
             return false;
+        }
+        public void Remove()
+        {
+            Dispose();
+            ChessBoard.CBoard.Board.Remove(this);
+        }
+
+        ~ChessPiece()
+        {
+            Dispose();
+        }
+        public void Dispose()
+        {
+            
         }
     }
 }

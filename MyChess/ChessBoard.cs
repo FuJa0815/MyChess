@@ -15,7 +15,7 @@ namespace MyChess
             {
                 if (_board != null) return _board;
                 _board = new ChessBoard();
-                _board.Board.ForEach(p => p.RecalculateValidMoves());
+                _board.RecalculateValidMoves();
                 return _board;
             }
         }
@@ -58,6 +58,8 @@ namespace MyChess
                 new Pawn(new ChessPosition(8,   7), PlayerColor.BLACK),
             };
         }
+        public void RecalculateValidMoves() => 
+            Board.AsParallel().ForAll(p => p.RecalculateValidMoves());
         public List<ChessPiece> Board { get; }
         public ChessPiece this[ChessPosition c]
         {

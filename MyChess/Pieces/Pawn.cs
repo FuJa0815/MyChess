@@ -21,7 +21,7 @@ namespace MyChess.Pieces
         }
         private void CheckAndInsertPawn(int xOff)
         {
-            var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + Owner == PlayerColor.WHITE ? 1 : -1));
+            var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + (Owner == PlayerColor.WHITE ? 1 : -1)));
             if (!ChessBoard.CBoard.IsInBoard(pos)) return;
             var b = ChessBoard.CBoard[pos];
             if (b == default) return;

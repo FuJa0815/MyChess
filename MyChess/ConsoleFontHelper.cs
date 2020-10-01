@@ -7,7 +7,16 @@ namespace MyChess
 {
     public static class ConsoleFontHelper
     {
-        public const ushort FONT_SIZE = 50;
+        public const ushort FONT_SIZE = 30;
+
+        public static void ClearCurrentConsoleLine()
+        {
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
+        }
+
 
         public static void Init()
         {
