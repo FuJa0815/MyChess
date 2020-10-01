@@ -17,6 +17,8 @@ namespace MyChess
         [Range(1, 8, ErrorMessage = "Out of range")]
         public byte Y { get; set; }
 
+        public override string ToString() => ((char)('a' - 1 + X)) + "" + Y;
+
         public override bool Equals(object obj)
         {
             if (!(obj is ChessPosition cp)) return false;
