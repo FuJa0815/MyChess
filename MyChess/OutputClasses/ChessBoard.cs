@@ -9,11 +9,18 @@ namespace MyChess.OutputClasses
 {
     public class ChessBoard : IRender, IDisposable, ICloneable
     {
+        public List<ChessMove> CalculateAllPossibleMoves(PlayerColor forPlayer) =>
+            Pieces
+            .Where(p => p.Owner == forPlayer)
+            .Select(p => p.ValidMoves.Select(
+                                             x => new ChessMove(p.CurrentPosition, x)))
+            .SelectMany(p => p)
+            .ToList();
         public bool IsProtected(ChessPosition pos, PlayerColor by)
         {
-            foreach(var enem in Pieces.Where(p=>p.Owner == by))
+            foreach (var enem in Pieces.Where(p => p.Owner == by))
             {
-                if(enem is Pawn p)
+                if (enem is Pawn p)
                 {
                     ChessPosition pos1;
                     ChessPosition pos2;
@@ -22,7 +29,7 @@ namespace MyChess.OutputClasses
                         // Move up
                         pos1 = new ChessPosition((byte)(p.CurrentPosition.X - 1), (byte)(p.CurrentPosition.Y + 1));
                         pos2 = new ChessPosition((byte)(p.CurrentPosition.X + 1), (byte)(p.CurrentPosition.Y + 1));
-                    
+
                     }
                     else
                     {
@@ -30,11 +37,12 @@ namespace MyChess.OutputClasses
                         pos1 = new ChessPosition((byte)(p.CurrentPosition.X - 1), (byte)(p.CurrentPosition.Y - 1));
                         pos2 = new ChessPosition((byte)(p.CurrentPosition.X + 1), (byte)(p.CurrentPosition.Y - 1));
                     }
-                    if(pos1.Equals(pos) || pos2.Equals(pos))
+                    if (pos1.Equals(pos) || pos2.Equals(pos))
                     {
                         return false;
                     }
-                } else if (enem.ValidMoves.Contains(pos))
+                }
+                else if (enem.ValidMoves.Contains(pos))
                     return true;
             }
             return false;
@@ -52,7 +60,8 @@ namespace MyChess.OutputClasses
             }
         }
         private ChessBoard() { }
-        private static ChessBoard CreateStandardChessBoard() {
+        private static ChessBoard CreateStandardChessBoard()
+        {
             return new ChessBoard()
             {
                 Pieces = new List<ChessPiece>()
@@ -95,12 +104,12 @@ namespace MyChess.OutputClasses
                 }
             };
         }
-        public void RecalculateValidMoves() => 
+        public void RecalculateValidMoves() =>
             Pieces.AsParallel().ForAll(p => p.RecalculateValidMoves(this));
         public List<ChessPiece> Pieces { get; internal set; }
         public ChessPiece this[ChessPosition c]
         {
-            get => Pieces.FirstOrDefault(p=>p.CurrentPosition.Equals(c));
+            get => Pieces.FirstOrDefault(p => p.CurrentPosition.Equals(c));
         }
 
         private static readonly string[] boardText = {
@@ -141,7 +150,7 @@ namespace MyChess.OutputClasses
                 Console.ForegroundColor = ConsoleColor.White;
             }
         }
-        
+
         public void Render()
         {
             RenderLegend();
@@ -152,7 +161,7 @@ namespace MyChess.OutputClasses
         ~ChessBoard() => Dispose();
         public void Dispose()
         {
-            Pieces.AsParallel().ForAll(p=>p.Dispose());
+            Pieces.AsParallel().ForAll(p => p.Dispose());
         }
 
         public object Clone()
