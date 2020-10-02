@@ -11,6 +11,9 @@ namespace MyChess
         }
 
         private Regex r = new Regex(@"^[a-h][1-8]-[a-h][1-8]$");
+
+        public override bool ShowErrors => true;
+
         public override ChessMove CalculateMove()
         {
             string line = "";

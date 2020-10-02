@@ -6,6 +6,7 @@ namespace MyChess
 {
     public abstract class Actor
     {
+        public abstract bool ShowErrors { get; }
         protected Actor(PlayerColor color)
         {
             Color = color;

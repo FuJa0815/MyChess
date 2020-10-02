@@ -1,4 +1,5 @@
 ﻿using System;
+using MyChess.AI;
 using MyChess.OutputClasses;
 
 namespace MyChess
@@ -6,7 +7,7 @@ namespace MyChess
     class Program
     {
         public static Actor PlayerW { get; } = new HumanActor(PlayerColor.WHITE);
-        public static Actor PlayerB { get; } = new HumanActor(PlayerColor.BLACK);
+        public static Actor PlayerB { get; } = new AIActor(PlayerColor.BLACK);
 
         static void Main(string[] args)
         {
