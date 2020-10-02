@@ -34,6 +34,8 @@ namespace MyChess.Pieces
             return board.IsProtected(CurrentPosition, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE);
         }
 
+        public override object Clone() => new King(CurrentPosition, Owner);
+
         public override char ChessChar => '♔';
     }
 }

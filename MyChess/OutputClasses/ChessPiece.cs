@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MyChess.OutputClasses
 {
-    public abstract class ChessPiece : IRender, IDisposable
+    public abstract class ChessPiece : IRender, IDisposable, ICloneable
     {
         public ChessPiece(ChessPosition startingPosition, PlayerColor owner)
         {
@@ -66,5 +66,7 @@ namespace MyChess.OutputClasses
         {
             
         }
+
+        public abstract object Clone();
     }
 }

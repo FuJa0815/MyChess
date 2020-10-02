@@ -27,6 +27,8 @@ namespace MyChess.Pieces
             CheckAndInsert( 1, -2, board);
         }
 
+        public override object Clone() => new Knight(CurrentPosition, Owner);
+
         public override char ChessChar => '♘';
     }
 }

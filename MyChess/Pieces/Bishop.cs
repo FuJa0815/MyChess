@@ -28,6 +28,8 @@ namespace MyChess.Pieces
                 if (!CheckAndInsert(-i, -i, board)) break;
         }
 
+        public override object Clone() => new Bishop(CurrentPosition, Owner);
+
         public override char ChessChar => '♗';
     }
 }

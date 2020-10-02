@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using MyChess.Pieces;
 
 namespace MyChess.OutputClasses
 {
-    public class ChessBoard : IRender, IDisposable
+    public class ChessBoard : IRender, IDisposable, ICloneable
     {
         public bool IsProtected(ChessPosition pos, PlayerColor by)
         {
@@ -96,7 +97,7 @@ namespace MyChess.OutputClasses
         }
         public void RecalculateValidMoves() => 
             Pieces.AsParallel().ForAll(p => p.RecalculateValidMoves(this));
-        public List<ChessPiece> Pieces { get; private set; }
+        public List<ChessPiece> Pieces { get; internal set; }
         public ChessPiece this[ChessPosition c]
         {
             get => Pieces.FirstOrDefault(p=>p.CurrentPosition.Equals(c));
@@ -152,6 +153,14 @@ namespace MyChess.OutputClasses
         public void Dispose()
         {
             Pieces.AsParallel().ForAll(p=>p.Dispose());
+        }
+
+        public object Clone()
+        {
+            var temp = new ChessBoard();
+            temp.Pieces = Pieces.Select(p => (ChessPiece)p.Clone()).ToList();
+            temp.RecalculateValidMoves();
+            return temp;
         }
     }
 }

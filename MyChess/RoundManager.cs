@@ -10,36 +10,36 @@ namespace MyChess
         public static Actor CurrentActor { get; private set; } = Program.PlayerW;
         public static uint CurrentRound { get; private set; } = 1;
 
-        internal static void MakeRound(ChessBoard board)
+        internal static void MakeRound(ref ChessBoard board)
         {
+            var clone = (ChessBoard)board.Clone();
+
             var move = CurrentActor.CalculateMove();
             var from = move.From;
             var to = move.To;
             if (!ChessBoard.IsInBoard(from)) throw new Exception(from.ToString() + " is not a valid cell");
             if (!ChessBoard.IsInBoard(to)) throw new Exception(to.ToString() + " is not a valid cell");
-            var fromPiece = board[from];
-            var toPiece = board[to];
+            var fromPiece = clone[from];
+            var toPiece = clone[to];
             if (fromPiece == default) throw new Exception("No piece at " + from.ToString());
             if (toPiece != default && toPiece.Owner.Equals(CurrentActor)) throw new Exception("Not your piece at "+to.ToString());
             if (!fromPiece.CanMove(to)) throw new Exception("Cannot move from " + from.ToString() + " to " + to.ToString());
 
-            var king = (King)board.Pieces.First(p => p is King && p.Owner == CurrentActor.Color);
-            
+            var king = (King)clone.Pieces.First(p => p is King && p.Owner == CurrentActor.Color);
+
 
             // ValidMove
             if(toPiece != default)
             {
-                toPiece.Remove(board);
+                toPiece.Remove(clone);
             }
             fromPiece.Move(to);
-            board.RecalculateValidMoves();
-            if (king.IsCheck(board) && !(fromPiece is King))
+            clone.RecalculateValidMoves();
+            if (king.IsCheck(clone))
             {
-                fromPiece.Move(from);
-                board.RecalculateValidMoves();
                 throw new Exception("Your king is in check!");
             }
-
+            board.Pieces = clone.Pieces;
             if (CurrentActor == Program.PlayerW)
                 CurrentActor = Program.PlayerB;
             else

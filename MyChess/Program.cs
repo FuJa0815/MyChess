@@ -17,7 +17,8 @@ namespace MyChess
             {
                 try
                 {
-                    RoundManager.MakeRound(ChessBoard.CurrentBoard);
+                    var b = ChessBoard.CurrentBoard;
+                    RoundManager.MakeRound(ref b);
                     Output.Out.Text = "";
                 } catch(Exception ex)
                 {
