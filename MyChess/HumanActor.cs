@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using MyChess.OutputClasses;
 
 namespace MyChess
 {
@@ -10,7 +11,7 @@ namespace MyChess
         }
 
         private Regex r = new Regex(@"^[a-h][1-8]-[a-h][1-8]$");
-        public override (ChessPosition from, ChessPosition to) CalculateMove()
+        public override ChessMove CalculateMove()
         {
             string line = "";
             bool notFirst = false;
@@ -28,7 +29,7 @@ namespace MyChess
             var splits = line.Split('-');
             var from = new ChessPosition((byte)(splits[0][0]-96), byte.Parse("" + splits[0][1]));
             var to = new ChessPosition((byte)(splits[1][0]-96), byte.Parse("" + splits[1][1]));
-            return (from, to);
+            return new ChessMove(from, to);
         }
     }
 }

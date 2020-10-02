@@ -12,7 +12,7 @@ namespace MyChess
         }
 
         public PlayerColor Color { get; }
-        public abstract (ChessPosition from, ChessPosition to) CalculateMove();
+        public abstract ChessMove CalculateMove();
 
         public override bool Equals(object obj)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using MyChess.OutputClasses;
 
 namespace MyChess
 {
@@ -10,8 +11,8 @@ namespace MyChess
         internal static void MakeRound()
         {
             var move = CurrentActor.CalculateMove();
-            var from = move.from;
-            var to = move.to;
+            var from = move.From;
+            var to = move.To;
             if (!ChessBoard.CBoard.IsInBoard(from)) throw new Exception(from.ToString() + " is not a valid cell");
             if (!ChessBoard.CBoard.IsInBoard(to)) throw new Exception(to.ToString() + " is not a valid cell");
             var fromPiece = ChessBoard.CBoard[from];
