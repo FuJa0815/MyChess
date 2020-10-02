@@ -10,6 +10,8 @@ namespace MyChess.Pieces
         {
         }
 
+        public override int AiImportance => 1;
+
         public override void RecalculateValidMoves(ChessBoard board)
         {
             base.RecalculateValidMoves(board);

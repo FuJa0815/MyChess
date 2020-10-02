@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MyChess.OutputClasses;
 
@@ -9,6 +10,8 @@ namespace MyChess.Pieces
         public King(ChessPosition startingPosition, PlayerColor owner) : base(startingPosition, owner)
         {
         }
+
+        public override int AiImportance => int.MaxValue;
 
         public override void RecalculateValidMoves(ChessBoard board)
         {

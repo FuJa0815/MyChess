@@ -6,6 +6,7 @@ namespace MyChess.OutputClasses
 {
     public abstract class ChessPiece : IRender, ICloneable
     {
+        public abstract int AiImportance { get; }
         protected ChessPiece(ChessPosition startingPosition, PlayerColor owner)
         {
             CurrentPosition = startingPosition;
