@@ -6,7 +6,7 @@ using MyChess.Pieces;
 
 namespace MyChess.OutputClasses
 {
-    public class ChessBoard : IRender
+    public class ChessBoard : IRender, IDisposable
     {
         public bool IsProtected(ChessPosition pos, PlayerColor by)
         {
@@ -50,8 +50,7 @@ namespace MyChess.OutputClasses
                 return _currentBoard;
             }
         }
-        private ChessBoard()
-        { }
+        private ChessBoard() { }
         private static ChessBoard CreateStandardChessBoard() {
             return new ChessBoard()
             {
@@ -61,7 +60,6 @@ namespace MyChess.OutputClasses
                     new Knight(new ChessPosition(2, 1), PlayerColor.WHITE),
                     new Bishop(new ChessPosition(3, 1), PlayerColor.WHITE),
                     new Queen(new ChessPosition(4,  1), PlayerColor.WHITE),
-                    new King(new ChessPosition(5,   1), PlayerColor.WHITE),
                     new Bishop(new ChessPosition(6, 1), PlayerColor.WHITE),
                     new Knight(new ChessPosition(7, 1), PlayerColor.WHITE),
                     new Rook(new ChessPosition(8,   1), PlayerColor.WHITE),
@@ -78,7 +76,6 @@ namespace MyChess.OutputClasses
                     new Knight(new ChessPosition(2, 8), PlayerColor.BLACK),
                     new Bishop(new ChessPosition(3, 8), PlayerColor.BLACK),
                     new Queen(new ChessPosition(4,  8), PlayerColor.BLACK),
-                    new King(new ChessPosition(5,   8), PlayerColor.BLACK),
                     new Bishop(new ChessPosition(6, 8), PlayerColor.BLACK),
                     new Knight(new ChessPosition(7, 8), PlayerColor.BLACK),
                     new Rook(new ChessPosition(8,   8), PlayerColor.BLACK),
@@ -90,6 +87,10 @@ namespace MyChess.OutputClasses
                     new Pawn(new ChessPosition(6,   7), PlayerColor.BLACK),
                     new Pawn(new ChessPosition(7,   7), PlayerColor.BLACK),
                     new Pawn(new ChessPosition(8,   7), PlayerColor.BLACK),
+
+
+                    new King(new ChessPosition(5,   1), PlayerColor.WHITE),
+                    new King(new ChessPosition(5,   8), PlayerColor.BLACK),
                 }
             };
         }
@@ -101,7 +102,7 @@ namespace MyChess.OutputClasses
             get => Board.FirstOrDefault(p=>p.CurrentPosition.Equals(c));
         }
 
-        private readonly string[] boardText = {
+        private static readonly string[] boardText = {
             "+-------------------------------+",
             "|   |   |   |   |   |   |   |   |",
             "|---+---+---+---+---+---+---+---|",
@@ -146,5 +147,11 @@ namespace MyChess.OutputClasses
             RenderBoard();
         }
         public static bool IsInBoard(ChessPosition p) => p.X >= 1 && p.X <= 8 && p.Y >= 1 && p.Y <= 8;
+
+        ~ChessBoard() => Dispose();
+        public void Dispose()
+        {
+            Board.AsParallel().ForAll(p=>p.Dispose());
+        }
     }
 }
