@@ -21,7 +21,12 @@ namespace MyChess
                     var b = ChessBoard.CurrentBoard;
                     RoundManager.MakeRound(ref b);
                     Output.Out.Text = "";
-                } catch(Exception ex)
+                } catch (RoundEndingException ex)
+                {
+                    Output.Out.Text = ex.Message;
+                    break;
+                }
+                catch(Exception ex)
                 {
                     if(RoundManager.CurrentActor.ShowErrors)
                         Output.Out.Text = ex.Message;

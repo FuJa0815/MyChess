@@ -1,4 +1,6 @@
-﻿using MyChess.OutputClasses;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MyChess.OutputClasses;
 
 namespace MyChess.Pieces
 {
@@ -22,13 +24,47 @@ namespace MyChess.Pieces
         private void CheckAndInsertKing(int xOff, int yOff, ChessBoard board)
         {
             var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff));
-            if(ChessBoard.IsInBoard(pos))
-                if (!board.IsProtected(pos, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White))
-                    CheckAndInsert(pos, board);
+            if (!ChessBoard.IsInBoard(pos)) return;
+            if (board.ProtectedBy(pos, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White).Any())
+                CheckAndInsert(pos, board);
         }
-        public bool IsCheck(ChessBoard board)
+        public IEnumerable<ChessPiece> GetChecking(ChessBoard board)
         {
-            return board.IsProtected(CurrentPosition, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White);
+            return board.ProtectedBy(CurrentPosition, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White);
+        }
+
+        public bool IsCheckmate(ChessBoard board)
+        {
+            var checking    = GetChecking(board).Select(p=>p.CurrentPosition);
+            var checkingPositions = checking as ChessPosition[] ?? checking.ToArray();
+
+
+            if (!checkingPositions.Any()) return false;
+            RecalculateValidMoves(board);
+            if (ValidMoves.Count > 0) return false;
+
+            var possibleMoves = board.CalculateAllPossibleMoves(Owner);
+            foreach (var move in possibleMoves)
+            {
+                var clone  = (ChessBoard)board.Clone();
+                var piece  = clone[move.From];
+                var target = clone[move.To];
+                target?.Remove(clone);
+                piece.Move(move.To);
+                var resolved = true;
+                foreach (var ch in checkingPositions)
+                {
+                    var p = clone[ch];
+                    if(p == default) continue;
+                    p.RecalculateValidMoves(clone);
+                    if (!p.ValidMoves.Contains(CurrentPosition)) continue;
+                    resolved = false;
+                    break;
+                }
+                if (resolved) return false;
+            }
+
+            return true;
         }
 
         public override object Clone() => new King(CurrentPosition, Owner);

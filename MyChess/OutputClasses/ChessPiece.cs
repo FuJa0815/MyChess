@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MyChess.OutputClasses
 {
-    public abstract class ChessPiece : IRender, IDisposable, ICloneable
+    public abstract class ChessPiece : IRender, ICloneable
     {
         protected ChessPiece(ChessPosition startingPosition, PlayerColor owner)
         {
@@ -51,17 +52,7 @@ namespace MyChess.OutputClasses
             CheckAndInsert(new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff)), board);
         public void Remove(ChessBoard board)
         {
-            Dispose();
             board.Pieces.Remove(this);
-        }
-
-        ~ChessPiece()
-        {
-            Dispose();
-        }
-        public void Dispose()
-        {
-            
         }
 
         public abstract object Clone();

@@ -5,7 +5,7 @@ using MyChess.Pieces;
 
 namespace MyChess.OutputClasses
 {
-    public class ChessBoard : IRender, IDisposable, ICloneable
+    public class ChessBoard : IRender, ICloneable
     {
         public List<ChessMove> CalculateAllPossibleMoves(PlayerColor forPlayer) =>
             Pieces
@@ -14,7 +14,7 @@ namespace MyChess.OutputClasses
                                              x => new ChessMove(p.CurrentPosition, x)))
             .SelectMany(p => p)
             .ToList();
-        public bool IsProtected(ChessPosition pos, PlayerColor by)
+        public IEnumerable<ChessPiece> ProtectedBy(ChessPosition pos, PlayerColor by)
         {
             foreach (var enemy in Pieces.Where(p => p.Owner == by))
             {
@@ -37,13 +37,12 @@ namespace MyChess.OutputClasses
                     }
                     if (pos1.Equals(pos) || pos2.Equals(pos))
                     {
-                        return false;
+                        yield return enemy;
                     }
                 }
                 else if (enemy.ValidMoves.Contains(pos))
-                    return true;
+                    yield return enemy;
             }
-            return false;
         }
 
         private static ChessBoard _currentBoard;
@@ -84,7 +83,6 @@ namespace MyChess.OutputClasses
                     new Knight(new ChessPosition(2, 8), PlayerColor.Black),
                     new Bishop(new ChessPosition(3, 8), PlayerColor.Black),
                     new Queen(new ChessPosition(4,  8), PlayerColor.Black),
-                    new King(new ChessPosition(5,   8), PlayerColor.Black),
                     new Bishop(new ChessPosition(6, 8), PlayerColor.Black),
                     new Knight(new ChessPosition(7, 8), PlayerColor.Black),
                     new Rook(new ChessPosition(8,   8), PlayerColor.Black),
@@ -97,8 +95,8 @@ namespace MyChess.OutputClasses
                     new Pawn(new ChessPosition(7,   7), PlayerColor.Black),
                     new Pawn(new ChessPosition(8,   7), PlayerColor.Black),
 
-
-                    new King(new ChessPosition(5,   1), PlayerColor.White),
+                    new King(new ChessPosition(5, 8), PlayerColor.Black),
+                    new King(new ChessPosition(5, 1), PlayerColor.White),
                 }
             };
         }
@@ -151,13 +149,8 @@ namespace MyChess.OutputClasses
             RenderLegend();
             RenderBoard();
         }
-        public static bool IsInBoard(ChessPosition p) => p.X >= 1 && p.X <= 8 && p.Y >= 1 && p.Y <= 8;
 
-        ~ChessBoard() => Dispose();
-        public void Dispose()
-        {
-            Pieces.AsParallel().ForAll(p => p.Dispose());
-        }
+        public static bool IsInBoard(ChessPosition p) => p.X >= 1 && p.X <= 8 && p.Y >= 1 && p.Y <= 8;
 
         public object Clone()
         {

@@ -32,8 +32,10 @@ namespace MyChess
             toPiece?.Remove(clone);
             fromPiece.Move(to);
             clone.RecalculateValidMoves();
-            if (king.IsCheck(clone))
+            if (king.GetChecking(clone).Any())
             {
+                if(king.IsCheckmate(clone))
+                    throw new RoundEndingException($"{(CurrentActor.Color == PlayerColor.White ? "Black" : "White")} wins!");
                 throw new Exception("Your king is in check!");
             }
             board.Pieces = clone.Pieces;

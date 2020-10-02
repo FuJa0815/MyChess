@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using MyChess.OutputClasses;
+using MyChess.Pieces;
 
 namespace MyChess.Ai
 {
