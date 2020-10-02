@@ -24,8 +24,7 @@ namespace MyChess
             if (!fromPiece.CanMove(to)) throw new Exception("Cannot move from " + from.ToString() + " to " + to.ToString());
 
             var king = (King)board.Pieces.First(p => p is King && p.Owner == CurrentActor.Color);
-            if (king.IsCheck(board) && !(fromPiece is King))
-                throw new Exception("Your king is in check!");
+            
 
             // ValidMove
             if(toPiece != default)
@@ -34,6 +33,13 @@ namespace MyChess
             }
             fromPiece.Move(to);
             board.RecalculateValidMoves();
+            if (king.IsCheck(board) && !(fromPiece is King))
+            {
+                fromPiece.Move(from);
+                board.RecalculateValidMoves();
+                throw new Exception("Your king is in check!");
+            }
+
             if (CurrentActor == Program.PlayerW)
                 CurrentActor = Program.PlayerB;
             else
