@@ -23,7 +23,8 @@ namespace MyChess
                     Output.Out.Text = "";
                 } catch(Exception ex)
                 {
-                    Output.Out.Text = ex.Message;
+                    if(RoundManager.CurrentActor.ShowErrors)
+                        Output.Out.Text = ex.Message;
                 }
             }
         }
