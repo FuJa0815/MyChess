@@ -7,7 +7,7 @@ namespace MyChess
     class Program
     {
         public static Actor PlayerW { get; } = new HumanActor(PlayerColor.WHITE);
-        public static Actor PlayerB { get; } = new AIActor(PlayerColor.BLACK);
+        public static Actor PlayerB { get; } = new RandomAiActor(PlayerColor.BLACK);
 
         static void Main(string[] args)
         {
