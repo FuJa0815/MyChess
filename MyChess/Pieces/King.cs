@@ -11,7 +11,7 @@ namespace MyChess.Pieces
         {
         }
 
-        public override int AiImportance => 999999;
+        public override int AiImportance => 900;
 
         public override void RecalculateValidMoves(ChessBoard board)
         {
@@ -72,7 +72,7 @@ namespace MyChess.Pieces
                 if (resolved) return false;
             }
 
-            throw new RoundEndingException($"{ (Owner == PlayerColor.White ? "Black" : "White") } wins!");
+            return true;
         }
 
         public override object Clone() => new King(CurrentPosition, Owner) { ValidMoves = this.ValidMoves };

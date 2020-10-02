@@ -14,7 +14,10 @@ namespace MyChess
         {
             board.RecalculateValidMoves();
             var clone       = (ChessBoard)board.Clone();
-            
+            var king = (King)clone.Pieces.First(p => p is King && p.Owner == CurrentActor.Color);
+            var kingInCheck = king.GetChecking(clone, king.CurrentPosition).Any();
+            if (!board.CalculateAllPossibleMoves(CurrentActor.Color).Any() && !kingInCheck)
+                throw new RoundEndingException("Remis");
             var move = CurrentActor.CalculateMove();
             var from = move.From;
             var to = move.To;
@@ -35,14 +38,11 @@ namespace MyChess
             CurrentActor = Equals(CurrentActor, Program.PlayerW) ? Program.PlayerB : Program.PlayerW;
             clone.RecalculateValidMoves();
             CurrentActor = Equals(CurrentActor, Program.PlayerW) ? Program.PlayerB : Program.PlayerW;
-            var king        = (King)clone.Pieces.First(p => p is King && p.Owner == CurrentActor.Color);
-            var kingInCheck = king.GetChecking(board, king.CurrentPosition).Any();
-            if (!board.CalculateAllPossibleMoves(CurrentActor.Color).Any() && !kingInCheck)
-                throw new RoundEndingException("Remis");
+            king        = (King)clone.Pieces.First(p => p is King && p.Owner == CurrentActor.Color);
+            kingInCheck = king.GetChecking(clone, king.CurrentPosition).Any();
+            
             if (kingInCheck)
             {
-                if(king.CheckCheckmate(clone))
-                    throw new RoundEndingException("Checkmate!");
                 throw new Exception("Your king is in check!");
             }
             board.Pieces = clone.Pieces;

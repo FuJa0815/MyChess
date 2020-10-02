@@ -18,15 +18,15 @@ namespace MyChess.OutputClasses
         {
             if (by == PlayerColor.White)
             {
-                var p1 = this[new ChessPosition((byte) (pos.X - 1), (byte) (pos.Y + 1))];
+                var p1 = this[new ChessPosition((byte) (pos.X - 1), (byte) (pos.Y - 1))];
                 if (p1 is Pawn && p1.Owner == by) yield return p1;
-                var p2 = this[new ChessPosition((byte)(pos.X + 1), (byte)(pos.Y + 1))];
+                var p2 = this[new ChessPosition((byte)(pos.X + 1), (byte)(pos.Y - 1))];
                 if (p2 is Pawn && p2.Owner == by) yield return p2;
             } else
             {
-                var p1 = this[new ChessPosition((byte)(pos.X - 1), (byte)(pos.Y - 1))];
+                var p1 = this[new ChessPosition((byte)(pos.X - 1), (byte)(pos.Y + 1))];
                 if (p1 is Pawn && p1.Owner == by) yield return p1;
-                var p2 = this[new ChessPosition((byte)(pos.X + 1), (byte)(pos.Y - 1))];
+                var p2 = this[new ChessPosition((byte)(pos.X + 1), (byte)(pos.Y + 1))];
                 if (p2 is Pawn && p2.Owner == by) yield return p2;
             }
 
@@ -97,8 +97,9 @@ namespace MyChess.OutputClasses
 
         public void RecalculateValidMoves()
         {            
-            Pieces.Sort((a, b) => a.Owner == RoundManager.CurrentActor.Color ? 1 : 0);
-            Pieces.ForEach(p => p.RecalculateValidMoves(this));
+            Pieces.OrderBy(x=>(RoundManager.CurrentActor.Color == PlayerColor.Black ? -1 : 1)*(int)(x.Owner))
+                  .ToList()
+                  .ForEach(p => p.RecalculateValidMoves(this));
         }
 
         public List<ChessPiece> Pieces { get; internal set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using MyChess.AI;
 using MyChess.OutputClasses;
 
@@ -14,6 +15,7 @@ namespace MyChess.Ai
         public override ChessMove CalculateMove()
         {
             var list = ChessBoard.CurrentBoard.CalculateAllPossibleMoves(Color);
+            if(!list.Any()) throw new RoundEndingException("Remis");
             return list[_r.Next(list.Count)];
         }
     }
