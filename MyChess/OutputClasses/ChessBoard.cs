@@ -31,7 +31,7 @@ namespace MyChess.OutputClasses
                     }
                     if(pos1.Equals(pos) || pos2.Equals(pos))
                     {
-                        return false;
+                        return true;
                     }
                 } else if (enem.ValidMoves.Contains(pos))
                     return true;
