@@ -38,7 +38,7 @@ namespace MyChess.Pieces
                 if (!CheckAndInsert(-i, 0, board)) break;
         }
 
-        public override object Clone() => new Queen(CurrentPosition, Owner);
+        public override object Clone() => new Queen(CurrentPosition, Owner) { ValidMoves = this.ValidMoves };
 
         public override char ChessChar => '♕';
     }

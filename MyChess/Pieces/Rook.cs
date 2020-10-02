@@ -25,7 +25,7 @@ namespace MyChess.Pieces
                 if (!CheckAndInsert(-i, 0, board)) break;
         }
 
-        public override object Clone() => new Rook(CurrentPosition, Owner);
+        public override object Clone() => new Rook(CurrentPosition, Owner) { ValidMoves = this.ValidMoves };
 
         public override char ChessChar => '♖';
     }

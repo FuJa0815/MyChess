@@ -38,7 +38,7 @@ namespace MyChess.Pieces
             ValidMoves.Add(pos);
         }
 
-        public override object Clone() => new Pawn(CurrentPosition, Owner);
+        public override object Clone() => new Pawn(CurrentPosition, Owner) { ValidMoves = this.ValidMoves };
 
         public override char ChessChar => '♙';
     }

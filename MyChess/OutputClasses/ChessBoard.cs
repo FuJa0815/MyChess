@@ -155,7 +155,6 @@ namespace MyChess.OutputClasses
         public object Clone()
         {
             var temp = new ChessBoard {Pieces = Pieces.Select(p => (ChessPiece) p.Clone()).ToList()};
-            temp.RecalculateValidMoves();
             return temp;
         }
     }

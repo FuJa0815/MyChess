@@ -35,7 +35,7 @@ namespace MyChess.Pieces
 
         public bool CheckCheckmate(ChessBoard board)
         {
-            RecalculateValidMoves(board);
+            board.RecalculateValidMoves();
             var possibleMoves     = board.CalculateAllPossibleMoves(Owner);
 
             var checking          = GetChecking(board).Select(p=>p.CurrentPosition);
@@ -73,7 +73,7 @@ namespace MyChess.Pieces
             throw new RoundEndingException($"{ (Owner == PlayerColor.White ? "Black" : "White") } wins!");
         }
 
-        public override object Clone() => new King(CurrentPosition, Owner);
+        public override object Clone() => new King(CurrentPosition, Owner) { ValidMoves = this.ValidMoves };
 
         public override char ChessChar => '♔';
     }
