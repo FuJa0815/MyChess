@@ -26,8 +26,8 @@ namespace MyChess.Pieces
         private void CheckAndInsertPawnDiagonal(int xOff)
         {
             var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + (Owner == PlayerColor.WHITE ? 1 : -1)));
-            if (!ChessBoard.CBoard.IsInBoard(pos)) return;
-            var b = ChessBoard.CBoard[pos];
+            if (!ChessBoard.IsInBoard(pos)) return;
+            var b = ChessBoard.CurrentBoard[pos];
             if (b == default) return;
             if (!b.Owner.Equals(Owner))
                 ValidMoves.Add(pos);
@@ -35,8 +35,8 @@ namespace MyChess.Pieces
         private void CheckAndInsertPawnForwards(int yOff)
         {
             var pos = new ChessPosition(CurrentPosition.X, (byte)(CurrentPosition.Y + (Owner == PlayerColor.WHITE ? yOff : -yOff)));
-            if (!ChessBoard.CBoard.IsInBoard(pos)) return;
-            var b = ChessBoard.CBoard[pos];
+            if (!ChessBoard.IsInBoard(pos)) return;
+            var b = ChessBoard.CurrentBoard[pos];
             if (b != default) return;
             ValidMoves.Add(pos);
         }

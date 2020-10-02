@@ -38,9 +38,9 @@ namespace MyChess.OutputClasses
 
         protected bool CheckAndInsert(ChessPosition pos)
         {
-            if (!ChessBoard.CBoard.IsInBoard(pos)) return false;
+            if (!ChessBoard.IsInBoard(pos)) return false;
             // TODO: CheckmateCheck
-            var b = ChessBoard.CBoard[pos];
+            var b = ChessBoard.CurrentBoard[pos];
             if (b == default)
             {
                 ValidMoves.Add(pos);
@@ -55,7 +55,7 @@ namespace MyChess.OutputClasses
         public void Remove()
         {
             Dispose();
-            ChessBoard.CBoard.Board.Remove(this);
+            ChessBoard.CurrentBoard.Board.Remove(this);
         }
 
         ~ChessPiece()

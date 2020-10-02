@@ -39,59 +39,63 @@ namespace MyChess.OutputClasses
             return false;
         }
 
-        private static ChessBoard _board;
-        public static ChessBoard CBoard
+        private static ChessBoard _currentBoard;
+        public static ChessBoard CurrentBoard
         {
             get
             {
-                if (_board != null) return _board;
-                _board = new ChessBoard();
-                _board.RecalculateValidMoves();
-                return _board;
+                if (_currentBoard != null) return _currentBoard;
+                _currentBoard = CreateStandardChessBoard();
+                _currentBoard.RecalculateValidMoves();
+                return _currentBoard;
             }
         }
         private ChessBoard()
-        {
-            Board = new List<ChessPiece>()
+        { }
+        private static ChessBoard CreateStandardChessBoard() {
+            return new ChessBoard()
             {
-                new Rook(new ChessPosition(1,   1), PlayerColor.WHITE),
-                new Knight(new ChessPosition(2, 1), PlayerColor.WHITE),
-                new Bishop(new ChessPosition(3, 1), PlayerColor.WHITE),
-                new Queen(new ChessPosition(4,  1), PlayerColor.WHITE),
-                new King(new ChessPosition(5,   1), PlayerColor.WHITE),
-                new Bishop(new ChessPosition(6, 1), PlayerColor.WHITE),
-                new Knight(new ChessPosition(7, 1), PlayerColor.WHITE),
-                new Rook(new ChessPosition(8,   1), PlayerColor.WHITE),
-                new Pawn(new ChessPosition(1,   2), PlayerColor.WHITE),
-                new Pawn(new ChessPosition(2,   2), PlayerColor.WHITE),
-                new Pawn(new ChessPosition(3,   2), PlayerColor.WHITE),
-                new Pawn(new ChessPosition(4,   2), PlayerColor.WHITE),
-                new Pawn(new ChessPosition(5,   2), PlayerColor.WHITE),
-                new Pawn(new ChessPosition(6,   2), PlayerColor.WHITE),
-                new Pawn(new ChessPosition(7,   2), PlayerColor.WHITE),
-                new Pawn(new ChessPosition(8,   2), PlayerColor.WHITE),
+                Board = new List<ChessPiece>()
+                {
+                    new Rook(new ChessPosition(1,   1), PlayerColor.WHITE),
+                    new Knight(new ChessPosition(2, 1), PlayerColor.WHITE),
+                    new Bishop(new ChessPosition(3, 1), PlayerColor.WHITE),
+                    new Queen(new ChessPosition(4,  1), PlayerColor.WHITE),
+                    new King(new ChessPosition(5,   1), PlayerColor.WHITE),
+                    new Bishop(new ChessPosition(6, 1), PlayerColor.WHITE),
+                    new Knight(new ChessPosition(7, 1), PlayerColor.WHITE),
+                    new Rook(new ChessPosition(8,   1), PlayerColor.WHITE),
+                    new Pawn(new ChessPosition(1,   2), PlayerColor.WHITE),
+                    new Pawn(new ChessPosition(2,   2), PlayerColor.WHITE),
+                    new Pawn(new ChessPosition(3,   2), PlayerColor.WHITE),
+                    new Pawn(new ChessPosition(4,   2), PlayerColor.WHITE),
+                    new Pawn(new ChessPosition(5,   2), PlayerColor.WHITE),
+                    new Pawn(new ChessPosition(6,   2), PlayerColor.WHITE),
+                    new Pawn(new ChessPosition(7,   2), PlayerColor.WHITE),
+                    new Pawn(new ChessPosition(8,   2), PlayerColor.WHITE),
 
-                new Rook(new ChessPosition(1,   8), PlayerColor.BLACK),
-                new Knight(new ChessPosition(2, 8), PlayerColor.BLACK),
-                new Bishop(new ChessPosition(3, 8), PlayerColor.BLACK),
-                new Queen(new ChessPosition(4,  8), PlayerColor.BLACK),
-                new King(new ChessPosition(5,   8), PlayerColor.BLACK),
-                new Bishop(new ChessPosition(6, 8), PlayerColor.BLACK),
-                new Knight(new ChessPosition(7, 8), PlayerColor.BLACK),
-                new Rook(new ChessPosition(8,   8), PlayerColor.BLACK),
-                new Pawn(new ChessPosition(1,   7), PlayerColor.BLACK),
-                new Pawn(new ChessPosition(2,   7), PlayerColor.BLACK),
-                new Pawn(new ChessPosition(3,   7), PlayerColor.BLACK),
-                new Pawn(new ChessPosition(4,   7), PlayerColor.BLACK),
-                new Pawn(new ChessPosition(5,   7), PlayerColor.BLACK),
-                new Pawn(new ChessPosition(6,   7), PlayerColor.BLACK),
-                new Pawn(new ChessPosition(7,   7), PlayerColor.BLACK),
-                new Pawn(new ChessPosition(8,   7), PlayerColor.BLACK),
+                    new Rook(new ChessPosition(1,   8), PlayerColor.BLACK),
+                    new Knight(new ChessPosition(2, 8), PlayerColor.BLACK),
+                    new Bishop(new ChessPosition(3, 8), PlayerColor.BLACK),
+                    new Queen(new ChessPosition(4,  8), PlayerColor.BLACK),
+                    new King(new ChessPosition(5,   8), PlayerColor.BLACK),
+                    new Bishop(new ChessPosition(6, 8), PlayerColor.BLACK),
+                    new Knight(new ChessPosition(7, 8), PlayerColor.BLACK),
+                    new Rook(new ChessPosition(8,   8), PlayerColor.BLACK),
+                    new Pawn(new ChessPosition(1,   7), PlayerColor.BLACK),
+                    new Pawn(new ChessPosition(2,   7), PlayerColor.BLACK),
+                    new Pawn(new ChessPosition(3,   7), PlayerColor.BLACK),
+                    new Pawn(new ChessPosition(4,   7), PlayerColor.BLACK),
+                    new Pawn(new ChessPosition(5,   7), PlayerColor.BLACK),
+                    new Pawn(new ChessPosition(6,   7), PlayerColor.BLACK),
+                    new Pawn(new ChessPosition(7,   7), PlayerColor.BLACK),
+                    new Pawn(new ChessPosition(8,   7), PlayerColor.BLACK),
+                }
             };
         }
         public void RecalculateValidMoves() => 
             Board.AsParallel().ForAll(p => p.RecalculateValidMoves());
-        public List<ChessPiece> Board { get; }
+        public List<ChessPiece> Board { get; private set; }
         public ChessPiece this[ChessPosition c]
         {
             get => Board.FirstOrDefault(p=>p.CurrentPosition.Equals(c));
@@ -141,6 +145,6 @@ namespace MyChess.OutputClasses
             RenderLegend();
             RenderBoard();
         }
-        public bool IsInBoard(ChessPosition p) => p.X >= 1 && p.X <= 8 && p.Y >= 1 && p.Y <= 8;
+        public static bool IsInBoard(ChessPosition p) => p.X >= 1 && p.X <= 8 && p.Y >= 1 && p.Y <= 8;
     }
 }

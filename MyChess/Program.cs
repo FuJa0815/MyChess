@@ -11,8 +11,8 @@ namespace MyChess
         static void Main(string[] args)
         {
             ConsoleFontHelper.Init();
-            ChessBoard.CBoard.Render();
-            ChessBoard.CBoard.Board.ForEach(p => p.Render());
+            ChessBoard.CurrentBoard.Render();
+            ChessBoard.CurrentBoard.Board.ForEach(p => p.Render());
             while (true)
             {
                 try

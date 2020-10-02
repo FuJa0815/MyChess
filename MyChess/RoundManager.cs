@@ -13,10 +13,10 @@ namespace MyChess
             var move = CurrentActor.CalculateMove();
             var from = move.From;
             var to = move.To;
-            if (!ChessBoard.CBoard.IsInBoard(from)) throw new Exception(from.ToString() + " is not a valid cell");
-            if (!ChessBoard.CBoard.IsInBoard(to)) throw new Exception(to.ToString() + " is not a valid cell");
-            var fromPiece = ChessBoard.CBoard[from];
-            var toPiece = ChessBoard.CBoard[to];
+            if (!ChessBoard.IsInBoard(from)) throw new Exception(from.ToString() + " is not a valid cell");
+            if (!ChessBoard.IsInBoard(to)) throw new Exception(to.ToString() + " is not a valid cell");
+            var fromPiece = ChessBoard.CurrentBoard[from];
+            var toPiece = ChessBoard.CurrentBoard[to];
             if (fromPiece == default) throw new Exception("No piece at " + from.ToString());
             if (toPiece != default && toPiece.Owner.Equals(CurrentActor)) throw new Exception("Not your piece at "+to.ToString());
             if (!fromPiece.CanMove(to)) throw new Exception("Cannot move from " + from.ToString() + " to " + to.ToString());
@@ -28,14 +28,14 @@ namespace MyChess
                 toPiece.Remove();
             }
             fromPiece.Move(to);
-            ChessBoard.CBoard.RecalculateValidMoves();
+            ChessBoard.CurrentBoard.RecalculateValidMoves();
             if (CurrentActor == Program.PlayerW)
                 CurrentActor = Program.PlayerB;
             else
                 CurrentActor = Program.PlayerW;
             CurrentRound++;
-            ChessBoard.CBoard.Render();
-            ChessBoard.CBoard.Board.ForEach(p => p.Render());
+            ChessBoard.CurrentBoard.Render();
+            ChessBoard.CurrentBoard.Board.ForEach(p => p.Render());
         }
     }
 }

@@ -25,7 +25,7 @@ namespace MyChess.Pieces
         private void CheckAndInsertKing(int xOff, int yOff)
         {
             var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff));
-            if (!ChessBoard.CBoard.IsProtected(pos, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE))
+            if (!ChessBoard.CurrentBoard.IsProtected(pos, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE))
                 CheckAndInsert(pos);
         }
         public override char ChessChar => '♔';
