@@ -29,6 +29,11 @@ namespace MyChess.Pieces
                 if (!ChessBoard.CurrentBoard.IsProtected(pos, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE))
                     CheckAndInsert(pos);
         }
+        public bool IsCheck()
+        {
+            return ChessBoard.CurrentBoard.IsProtected(CurrentPosition, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE);
+        }
+
         public override char ChessChar => '♔';
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using MyChess.OutputClasses;
+using MyChess.Pieces;
 
 namespace MyChess
 {
@@ -21,6 +23,9 @@ namespace MyChess
             if (toPiece != default && toPiece.Owner.Equals(CurrentActor)) throw new Exception("Not your piece at "+to.ToString());
             if (!fromPiece.CanMove(to)) throw new Exception("Cannot move from " + from.ToString() + " to " + to.ToString());
 
+            var king = (King)ChessBoard.CurrentBoard.Board.First(p => p is King && p.Owner == CurrentActor.Color);
+            if (king.IsCheck() && !(fromPiece is King))
+                throw new Exception("Your king is in check!");
 
             // ValidMove
             if(toPiece != default)
