@@ -16,31 +16,23 @@ namespace MyChess.OutputClasses
             .ToList();
         public IEnumerable<ChessPiece> ProtectedBy(ChessPosition pos, PlayerColor by)
         {
-            foreach (var enemy in Pieces.Where(p => p.Owner == by))
+            if (by == PlayerColor.White)
             {
-                if (enemy is Pawn p)
-                {
-                    ChessPosition pos1;
-                    ChessPosition pos2;
-                    if (p.Owner == PlayerColor.White)
-                    {
-                        // Move up
-                        pos1 = new ChessPosition((byte)(p.CurrentPosition.X - 1), (byte)(p.CurrentPosition.Y + 1));
-                        pos2 = new ChessPosition((byte)(p.CurrentPosition.X + 1), (byte)(p.CurrentPosition.Y + 1));
+                var p1 = this[new ChessPosition((byte) (pos.X - 1), (byte) (pos.Y + 1))];
+                if (p1 is Pawn && p1.Owner == by) yield return p1;
+                var p2 = this[new ChessPosition((byte)(pos.X + 1), (byte)(pos.Y + 1))];
+                if (p2 is Pawn && p2.Owner == by) yield return p2;
+            } else
+            {
+                var p1 = this[new ChessPosition((byte)(pos.X - 1), (byte)(pos.Y - 1))];
+                if (p1 is Pawn && p1.Owner == by) yield return p1;
+                var p2 = this[new ChessPosition((byte)(pos.X + 1), (byte)(pos.Y - 1))];
+                if (p2 is Pawn && p2.Owner == by) yield return p2;
+            }
 
-                    }
-                    else
-                    {
-                        // Move down
-                        pos1 = new ChessPosition((byte)(p.CurrentPosition.X - 1), (byte)(p.CurrentPosition.Y - 1));
-                        pos2 = new ChessPosition((byte)(p.CurrentPosition.X + 1), (byte)(p.CurrentPosition.Y - 1));
-                    }
-                    if (pos1.Equals(pos) || pos2.Equals(pos))
-                    {
-                        yield return enemy;
-                    }
-                }
-                else if (enemy.ValidMoves.Contains(pos))
+            foreach (var enemy in Pieces.Where(p => p.Owner == by && !(p is Pawn)))
+            {
+                if (enemy.ValidMoves.Contains(pos))
                     yield return enemy;
             }
         }
@@ -63,21 +55,6 @@ namespace MyChess.OutputClasses
             {
                 Pieces = new List<ChessPiece>()
                 {
-                    new Rook(new ChessPosition(1,   1), PlayerColor.White),
-                    new Knight(new ChessPosition(2, 1), PlayerColor.White),
-                    new Bishop(new ChessPosition(3, 1), PlayerColor.White),
-                    new Queen(new ChessPosition(4,  1), PlayerColor.White),
-                    new Bishop(new ChessPosition(6, 1), PlayerColor.White),
-                    new Knight(new ChessPosition(7, 1), PlayerColor.White),
-                    new Rook(new ChessPosition(8,   1), PlayerColor.White),
-                    new Pawn(new ChessPosition(1,   2), PlayerColor.White),
-                    new Pawn(new ChessPosition(2,   2), PlayerColor.White),
-                    new Pawn(new ChessPosition(3,   2), PlayerColor.White),
-                    new Pawn(new ChessPosition(4,   2), PlayerColor.White),
-                    new Pawn(new ChessPosition(5,   2), PlayerColor.White),
-                    new Pawn(new ChessPosition(6,   2), PlayerColor.White),
-                    new Pawn(new ChessPosition(7,   2), PlayerColor.White),
-                    new Pawn(new ChessPosition(8,   2), PlayerColor.White),
 
                     new Rook(new ChessPosition(1,   8), PlayerColor.Black),
                     new Knight(new ChessPosition(2, 8), PlayerColor.Black),
@@ -95,13 +72,35 @@ namespace MyChess.OutputClasses
                     new Pawn(new ChessPosition(7,   7), PlayerColor.Black),
                     new Pawn(new ChessPosition(8,   7), PlayerColor.Black),
 
-                    new King(new ChessPosition(5, 8), PlayerColor.Black),
-                    new King(new ChessPosition(5, 1), PlayerColor.White),
+                    new King(new ChessPosition(5,   8), PlayerColor.Black),
+
+                    new Rook(new ChessPosition(1,   1), PlayerColor.White),
+                    new Knight(new ChessPosition(2, 1), PlayerColor.White),
+                    new Bishop(new ChessPosition(3, 1), PlayerColor.White),
+                    new Queen(new ChessPosition(4,  1), PlayerColor.White),
+                    new Bishop(new ChessPosition(6, 1), PlayerColor.White),
+                    new Knight(new ChessPosition(7, 1), PlayerColor.White),
+                    new Rook(new ChessPosition(8,   1), PlayerColor.White),
+                    new Pawn(new ChessPosition(1,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(2,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(3,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(4,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(5,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(6,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(7,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(8,   2), PlayerColor.White),
+
+                    new King(new ChessPosition(5,   1), PlayerColor.White),
                 }
             };
         }
-        public void RecalculateValidMoves() =>
-            Pieces.AsParallel().ForAll(p => p.RecalculateValidMoves(this));
+
+        public void RecalculateValidMoves()
+        {            
+            Pieces.Sort((a, b) => a.Owner == RoundManager.CurrentActor.Color ? 1 : 0);
+            Pieces.ForEach(p => p.RecalculateValidMoves(this));
+        }
+
         public List<ChessPiece> Pieces { get; internal set; }
         public ChessPiece this[ChessPosition c] => Pieces.FirstOrDefault(p => p.CurrentPosition.Equals(c));
 

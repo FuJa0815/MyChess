@@ -11,29 +11,30 @@ namespace MyChess.Pieces
         {
         }
 
-        public override int AiImportance => int.MaxValue;
+        public override int AiImportance => 999999;
 
         public override void RecalculateValidMoves(ChessBoard board)
         {
             base.RecalculateValidMoves(board);
-            CheckAndInsertKing(-1,-1, board);
-            CheckAndInsertKing(-1, 0, board);
-            CheckAndInsertKing(-1, 1, board);
-            CheckAndInsertKing( 0,-1, board);
-            CheckAndInsertKing( 0, 1, board);
-            CheckAndInsertKing( 1,-1, board);
-            CheckAndInsertKing( 1, 0, board);
+            CheckAndInsertKing(-1, -1, board);
+            CheckAndInsertKing(-1, 0,  board);
+            CheckAndInsertKing(-1, 1,  board);
+            CheckAndInsertKing( 0, -1, board);
+            CheckAndInsertKing( 0, 1,  board);
+            CheckAndInsertKing( 1, -1, board);
+            CheckAndInsertKing( 1, 0,  board);
+            CheckAndInsertKing(1,  1,  board);
         }
         private void CheckAndInsertKing(int xOff, int yOff, ChessBoard board)
         {
             var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff));
             if (!ChessBoard.IsInBoard(pos)) return;
-            if (board.ProtectedBy(pos, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White).Any())
+            if (!GetChecking(board, pos).Any())
                 CheckAndInsert(pos, board);
         }
-        public IEnumerable<ChessPiece> GetChecking(ChessBoard board)
+        public IEnumerable<ChessPiece> GetChecking(ChessBoard board, ChessPosition pos)
         {
-            return board.ProtectedBy(CurrentPosition, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White);
+            return board.ProtectedBy(pos, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White);
         }
 
         public bool CheckCheckmate(ChessBoard board)
@@ -41,16 +42,14 @@ namespace MyChess.Pieces
             board.RecalculateValidMoves();
             var possibleMoves     = board.CalculateAllPossibleMoves(Owner);
 
-            var checking          = GetChecking(board).Select(p=>p.CurrentPosition);
+            var checking          = GetChecking(board, CurrentPosition).Select(p=>p.CurrentPosition);
             var checkingPositions = checking as ChessPosition[] ?? checking.ToArray();
 
             if (ValidMoves.Count > 0) return false;
 
             if (!checkingPositions.Any())
             {
-                if(possibleMoves.Count == 0)
-                    throw new RoundEndingException("Remis");
-                return false;
+                return true;
             }
 
             foreach (var move in possibleMoves)

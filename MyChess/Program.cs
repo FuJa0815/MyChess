@@ -6,8 +6,8 @@ namespace MyChess
 {
     internal class Program
     {
-        public static Actor PlayerW { get; } = new HumanActor(PlayerColor.White);
-        public static Actor PlayerB { get; } = new RandomAiActor(PlayerColor.Black);
+        public static Actor PlayerW { get; } = new NegaMaxAiActor(PlayerColor.White, 3);
+        public static Actor PlayerB { get; } = new NegaMaxAiActor(PlayerColor.Black, 3);
 
         private static void Main()
         {
@@ -24,6 +24,8 @@ namespace MyChess
                 } catch (RoundEndingException ex)
                 {
                     Output.Out.Text = ex.Message;
+                    ChessBoard.CurrentBoard.Render();
+                    ChessBoard.CurrentBoard.Pieces.ForEach(p=>p.Render());
                     break;
                 }
                 catch(Exception ex)
