@@ -9,10 +9,10 @@ using MyChess.Pieces;
 
 namespace MyChess.Ai
 {
-    public class NegaMaxAiActor : AiActor
+    public class MiniMaxAiActor : AiActor
     {
         public int AiDepth { get; }
-        public NegaMaxAiActor(PlayerColor color, int aiDepth) : base(color)
+        public MiniMaxAiActor(PlayerColor color, int aiDepth) : base(color)
         {
             AiDepth = aiDepth;
         }
@@ -20,17 +20,17 @@ namespace MyChess.Ai
         public override ChessMove CalculateMove()
         {
             PrintLoading();
-            max(Color, AiDepth);
+            max(Color, AiDepth, int.MinValue, int.MaxValue);
             ChessBoard.CurrentBoard.RecalculateValidMoves();
             return _result;
         }
 
         private ChessMove _result;
 
-        private int max(PlayerColor player, int depth)
+        private int max(PlayerColor player, int depth, int alpha, int beta)
         {
             if (depth == 0) return CalcScore(ChessBoard.CurrentBoard);
-            int maxValue = int.MinValue;
+            int maxValue = alpha;
             ChessBoard.CurrentBoard.RecalculateValidMoves();
             var moves    = ChessBoard.CurrentBoard.CalculateAllPossibleMoves(player);
             foreach (var move in moves)
@@ -40,7 +40,7 @@ namespace MyChess.Ai
                 targetPiece?.Remove(ChessBoard.CurrentBoard);
                 movingPiece.Move(move.To);
 
-                var value       = min(player == PlayerColor.White ? PlayerColor.Black : PlayerColor.White, depth - 1);
+                var value       = min(player == PlayerColor.White ? PlayerColor.Black : PlayerColor.White, depth - 1, maxValue, beta);
                 
                 if(targetPiece != default)
                     ChessBoard.CurrentBoard.Pieces.Add(targetPiece);
@@ -53,16 +53,18 @@ namespace MyChess.Ai
                     {
                         _result = move;
                     }
+
+                    if (maxValue >= beta) break;
                 }
             }
 
             return maxValue;
         }
 
-        private int min(PlayerColor player, int depth)
+        private int min(PlayerColor player, int depth, int alpha, int beta)
         {
             if (depth == 0) return CalcScore(ChessBoard.CurrentBoard);
-            int minValue = int.MaxValue;
+            int minValue = beta;
             ChessBoard.CurrentBoard.RecalculateValidMoves();
             var moves    = ChessBoard.CurrentBoard.CalculateAllPossibleMoves(player);
             foreach (var move in moves)
@@ -72,7 +74,7 @@ namespace MyChess.Ai
                 targetPiece?.Remove(ChessBoard.CurrentBoard);
                 movingPiece.Move(move.To);
 
-                var value = max(player == PlayerColor.White ? PlayerColor.Black : PlayerColor.White, depth - 1);
+                var value = max(player == PlayerColor.White ? PlayerColor.Black : PlayerColor.White, depth - 1, alpha, minValue);
                 
                 if (targetPiece != default)
                     ChessBoard.CurrentBoard.Pieces.Add(targetPiece);
@@ -81,6 +83,7 @@ namespace MyChess.Ai
                 if (value < minValue)
                 {
                     minValue = value;
+                    if (minValue <= alpha) break;
                 }
             }
 
@@ -145,9 +148,16 @@ namespace MyChess.Ai
             var bKing = (King)board.Pieces.First(p => p.Owner  == PlayerColor.Black && p is King);
             if (wKing.CheckCheckmate(board)) return int.MinValue;
             if (bKing.CheckCheckmate(board)) return int.MaxValue;*/
+            if (Color == PlayerColor.Black)
+            {
+                return board.Pieces.Where(p => p.Owner == PlayerColor.Black).Sum(p => p.AiImportance) -
+                       board.Pieces.Where(p => p.Owner == PlayerColor.White).Sum(p => p.AiImportance);
+            } else
+            {
+                return board.Pieces.Where(p => p.Owner == PlayerColor.White).Sum(p => p.AiImportance) -
+                       board.Pieces.Where(p => p.Owner == PlayerColor.Black).Sum(p => p.AiImportance);
+            }
 
-            return board.Pieces.Where(p => p.Owner == PlayerColor.Black).Sum(p => p.AiImportance) -
-                   board.Pieces.Where(p => p.Owner == PlayerColor.White).Sum(p => p.AiImportance);
         }
     }
 }

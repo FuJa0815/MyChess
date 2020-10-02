@@ -27,9 +27,11 @@ namespace MyChess
 
         private static void Main()
         {
-            switch (AskUserForNumber(@"(1) Player vs Player
+            switch (AskUserForNumber(@"White/Black
+(1) Player vs Player
 (2) Player vs AI
-(3) AI vs AI", 1, 3))
+(3) AI vs Player
+(4) AI vs AI", 1, 4))
             {
                 case 1:
                     PlayerW = new HumanActor(PlayerColor.White);
@@ -41,20 +43,28 @@ namespace MyChess
                     if(input == 0)
                         PlayerB = new RandomAiActor(PlayerColor.Black);
                     else
-                        PlayerB = new NegaMaxAiActor(PlayerColor.Black, input);
+                        PlayerB = new MiniMaxAiActor(PlayerColor.Black, input);
                     break;
                 case 3:
+                    PlayerB = new HumanActor(PlayerColor.Black);
+                    var input3 = AskUserForNumber("AI depth (0 for random)", 0, 5);
+                    if (input3 == 0)
+                        PlayerW = new RandomAiActor(PlayerColor.White);
+                    else
+                        PlayerW = new MiniMaxAiActor(PlayerColor.White, input3);
+                    break;
+                case 4:
                     var input1 = AskUserForNumber("AI 1 depth (0 for random)", 0, 5);
                     var input2 = AskUserForNumber("AI 2 depth (0 for random)",   0, 5);
 
                     if (input1 == 0)
                         PlayerW = new RandomAiActor(PlayerColor.White);
                     else
-                        PlayerW = new NegaMaxAiActor(PlayerColor.White, input1);
+                        PlayerW = new MiniMaxAiActor(PlayerColor.White, input1);
                     if (input2 == 0)
                         PlayerB = new RandomAiActor(PlayerColor.Black);
                     else
-                        PlayerB = new NegaMaxAiActor(PlayerColor.Black, input2);
+                        PlayerB = new MiniMaxAiActor(PlayerColor.Black, input2);
                     break;
             }
 
