@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace MyChess
+namespace MyChess.OutputClasses
 {
     public static class ConsoleFontHelper
     {

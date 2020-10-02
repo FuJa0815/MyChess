@@ -1,4 +1,4 @@
-﻿namespace MyChess
+﻿namespace MyChess.OutputClasses
 {
     public interface IRender
     {

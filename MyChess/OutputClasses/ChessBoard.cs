@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using MyChess.Pieces;
 
-namespace MyChess
+namespace MyChess.OutputClasses
 {
     public class ChessBoard : IRender
     {

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MyChess
+namespace MyChess.OutputClasses
 {
     public class Output : IRender
     {
