@@ -6,7 +6,7 @@ using MyChess.OutputClasses;
 
 namespace MyChess.AI
 {
-    internal static class AIChessBoardHelper
+    internal static class AiChessBoardHelper
     {
         internal static List<ChessMove> CalculateAllPossibleMoves(ChessBoard board, PlayerColor forPlayer) =>
             board.Pieces

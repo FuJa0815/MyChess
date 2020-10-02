@@ -5,7 +5,7 @@ using MyChess.OutputClasses;
 
 namespace MyChess.AI
 {
-    public class RandomAiActor : AIActor
+    public class RandomAiActor : AiActor
     {
         private readonly Random _r = new Random();
         public RandomAiActor(PlayerColor color) : base(color)

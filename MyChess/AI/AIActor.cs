@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MyChess.OutputClasses;
-
-namespace MyChess.AI
+﻿namespace MyChess.AI
 {
-    public abstract class AIActor : Actor
+    public abstract class AiActor : Actor
     {
         public override bool ShowErrors => false;
 
-        protected AIActor(PlayerColor color) : base(color)
+        protected AiActor(PlayerColor color) : base(color)
         {
 
         }
