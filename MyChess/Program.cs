@@ -4,12 +4,12 @@ using MyChess.OutputClasses;
 
 namespace MyChess
 {
-    class Program
+    internal class Program
     {
-        public static Actor PlayerW { get; } = new HumanActor(PlayerColor.WHITE);
-        public static Actor PlayerB { get; } = new RandomAiActor(PlayerColor.BLACK);
+        public static Actor PlayerW { get; } = new HumanActor(PlayerColor.White);
+        public static Actor PlayerB { get; } = new RandomAiActor(PlayerColor.Black);
 
-        static void Main(string[] args)
+        private static void Main()
         {
             ConsoleFontHelper.Init();
             ChessBoard.CurrentBoard.Render();

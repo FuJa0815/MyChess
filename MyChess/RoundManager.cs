@@ -17,22 +17,19 @@ namespace MyChess
             var move = CurrentActor.CalculateMove();
             var from = move.From;
             var to = move.To;
-            if (!ChessBoard.IsInBoard(from)) throw new Exception(from.ToString() + " is not a valid cell");
-            if (!ChessBoard.IsInBoard(to)) throw new Exception(to.ToString() + " is not a valid cell");
+            if (!ChessBoard.IsInBoard(from)) throw new Exception(@from + " is not a valid cell");
+            if (!ChessBoard.IsInBoard(to)) throw new Exception(to + " is not a valid cell");
             var fromPiece = clone[from];
             var toPiece = clone[to];
-            if (fromPiece == default) throw new Exception("No piece at " + from.ToString());
-            if (toPiece != default && toPiece.Owner.Equals(CurrentActor)) throw new Exception("Not your piece at "+to.ToString());
-            if (!fromPiece.CanMove(to)) throw new Exception("Cannot move from " + from.ToString() + " to " + to.ToString());
+            if (fromPiece == default) throw new Exception("No piece at " + @from);
+            if (toPiece != default && toPiece.Owner.Equals(CurrentActor.Color)) throw new Exception("Not your piece at "+to);
+            if (!fromPiece.CanMove(to)) throw new Exception("Cannot move from " + @from + " to " + to);
 
             var king = (King)clone.Pieces.First(p => p is King && p.Owner == CurrentActor.Color);
 
 
             // ValidMove
-            if(toPiece != default)
-            {
-                toPiece.Remove(clone);
-            }
+            toPiece?.Remove(clone);
             fromPiece.Move(to);
             clone.RecalculateValidMoves();
             if (king.IsCheck(clone))
@@ -40,10 +37,7 @@ namespace MyChess
                 throw new Exception("Your king is in check!");
             }
             board.Pieces = clone.Pieces;
-            if (CurrentActor == Program.PlayerW)
-                CurrentActor = Program.PlayerB;
-            else
-                CurrentActor = Program.PlayerW;
+            CurrentActor = Equals(CurrentActor, Program.PlayerW) ? Program.PlayerB : Program.PlayerW;
             CurrentRound++;
             board.Render();
             board.Pieces.ForEach(p => p.Render());

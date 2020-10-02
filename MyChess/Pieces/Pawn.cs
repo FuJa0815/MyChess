@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MyChess.OutputClasses;
+﻿using MyChess.OutputClasses;
 
 namespace MyChess.Pieces
 {
@@ -16,8 +13,8 @@ namespace MyChess.Pieces
         public override void RecalculateValidMoves(ChessBoard board)
         {
             base.RecalculateValidMoves(board);
-            if ((CurrentPosition.Y == 2 && Owner == PlayerColor.WHITE) ||
-               (CurrentPosition.Y == 7 && Owner == PlayerColor.BLACK))
+            if ((CurrentPosition.Y == 2 && Owner == PlayerColor.White) ||
+               (CurrentPosition.Y == 7 && Owner == PlayerColor.Black))
                 CheckAndInsertPawnForwards(2, board);
             CheckAndInsertPawnForwards(1, board);
             CheckAndInsertPawnDiagonal(-1, board);
@@ -25,7 +22,7 @@ namespace MyChess.Pieces
         }
         private void CheckAndInsertPawnDiagonal(int xOff, ChessBoard board)
         {
-            var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + (Owner == PlayerColor.WHITE ? 1 : -1)));
+            var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + (Owner == PlayerColor.White ? 1 : -1)));
             if (!ChessBoard.IsInBoard(pos)) return;
             var b = board[pos];
             if (b == default) return;
@@ -34,7 +31,7 @@ namespace MyChess.Pieces
         }
         private void CheckAndInsertPawnForwards(int yOff, ChessBoard board)
         {
-            var pos = new ChessPosition(CurrentPosition.X, (byte)(CurrentPosition.Y + (Owner == PlayerColor.WHITE ? yOff : -yOff)));
+            var pos = new ChessPosition(CurrentPosition.X, (byte)(CurrentPosition.Y + (Owner == PlayerColor.White ? yOff : -yOff)));
             if (!ChessBoard.IsInBoard(pos)) return;
             var b = board[pos];
             if (b != default) return;

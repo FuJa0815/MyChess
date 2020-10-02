@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using MyChess.OutputClasses;
 
 namespace MyChess.AI
@@ -14,7 +12,7 @@ namespace MyChess.AI
         }
         public override ChessMove CalculateMove()
         {
-            var list = AIChessBoardHelper.CalculateAllPossibleMoves(ChessBoard.CurrentBoard, Color);
+            var list = ChessBoard.CurrentBoard.CalculateAllPossibleMoves(Color);
             return list[_r.Next(list.Count)];
         }
     }

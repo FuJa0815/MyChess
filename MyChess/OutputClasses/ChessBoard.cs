@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using MyChess.Pieces;
 
 namespace MyChess.OutputClasses
@@ -18,13 +16,13 @@ namespace MyChess.OutputClasses
             .ToList();
         public bool IsProtected(ChessPosition pos, PlayerColor by)
         {
-            foreach (var enem in Pieces.Where(p => p.Owner == by))
+            foreach (var enemy in Pieces.Where(p => p.Owner == by))
             {
-                if (enem is Pawn p)
+                if (enemy is Pawn p)
                 {
                     ChessPosition pos1;
                     ChessPosition pos2;
-                    if (p.Owner == PlayerColor.WHITE)
+                    if (p.Owner == PlayerColor.White)
                     {
                         // Move up
                         pos1 = new ChessPosition((byte)(p.CurrentPosition.X - 1), (byte)(p.CurrentPosition.Y + 1));
@@ -42,7 +40,7 @@ namespace MyChess.OutputClasses
                         return false;
                     }
                 }
-                else if (enem.ValidMoves.Contains(pos))
+                else if (enemy.ValidMoves.Contains(pos))
                     return true;
             }
             return false;
@@ -66,51 +64,48 @@ namespace MyChess.OutputClasses
             {
                 Pieces = new List<ChessPiece>()
                 {
-                    new Rook(new ChessPosition(1,   1), PlayerColor.WHITE),
-                    new Knight(new ChessPosition(2, 1), PlayerColor.WHITE),
-                    new Bishop(new ChessPosition(3, 1), PlayerColor.WHITE),
-                    new Queen(new ChessPosition(4,  1), PlayerColor.WHITE),
-                    new Bishop(new ChessPosition(6, 1), PlayerColor.WHITE),
-                    new Knight(new ChessPosition(7, 1), PlayerColor.WHITE),
-                    new Rook(new ChessPosition(8,   1), PlayerColor.WHITE),
-                    new Pawn(new ChessPosition(1,   2), PlayerColor.WHITE),
-                    new Pawn(new ChessPosition(2,   2), PlayerColor.WHITE),
-                    new Pawn(new ChessPosition(3,   2), PlayerColor.WHITE),
-                    new Pawn(new ChessPosition(4,   2), PlayerColor.WHITE),
-                    new Pawn(new ChessPosition(5,   2), PlayerColor.WHITE),
-                    new Pawn(new ChessPosition(6,   2), PlayerColor.WHITE),
-                    new Pawn(new ChessPosition(7,   2), PlayerColor.WHITE),
-                    new Pawn(new ChessPosition(8,   2), PlayerColor.WHITE),
+                    new Rook(new ChessPosition(1,   1), PlayerColor.White),
+                    new Knight(new ChessPosition(2, 1), PlayerColor.White),
+                    new Bishop(new ChessPosition(3, 1), PlayerColor.White),
+                    new Queen(new ChessPosition(4,  1), PlayerColor.White),
+                    new Bishop(new ChessPosition(6, 1), PlayerColor.White),
+                    new Knight(new ChessPosition(7, 1), PlayerColor.White),
+                    new Rook(new ChessPosition(8,   1), PlayerColor.White),
+                    new Pawn(new ChessPosition(1,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(2,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(3,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(4,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(5,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(6,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(7,   2), PlayerColor.White),
+                    new Pawn(new ChessPosition(8,   2), PlayerColor.White),
 
-                    new Rook(new ChessPosition(1,   8), PlayerColor.BLACK),
-                    new Knight(new ChessPosition(2, 8), PlayerColor.BLACK),
-                    new Bishop(new ChessPosition(3, 8), PlayerColor.BLACK),
-                    new Queen(new ChessPosition(4,  8), PlayerColor.BLACK),
-                    new King(new ChessPosition(5,   8), PlayerColor.BLACK),
-                    new Bishop(new ChessPosition(6, 8), PlayerColor.BLACK),
-                    new Knight(new ChessPosition(7, 8), PlayerColor.BLACK),
-                    new Rook(new ChessPosition(8,   8), PlayerColor.BLACK),
-                    new Pawn(new ChessPosition(1,   7), PlayerColor.BLACK),
-                    new Pawn(new ChessPosition(2,   7), PlayerColor.BLACK),
-                    new Pawn(new ChessPosition(3,   7), PlayerColor.BLACK),
-                    new Pawn(new ChessPosition(4,   7), PlayerColor.BLACK),
-                    new Pawn(new ChessPosition(5,   7), PlayerColor.BLACK),
-                    new Pawn(new ChessPosition(6,   7), PlayerColor.BLACK),
-                    new Pawn(new ChessPosition(7,   7), PlayerColor.BLACK),
-                    new Pawn(new ChessPosition(8,   7), PlayerColor.BLACK),
+                    new Rook(new ChessPosition(1,   8), PlayerColor.Black),
+                    new Knight(new ChessPosition(2, 8), PlayerColor.Black),
+                    new Bishop(new ChessPosition(3, 8), PlayerColor.Black),
+                    new Queen(new ChessPosition(4,  8), PlayerColor.Black),
+                    new King(new ChessPosition(5,   8), PlayerColor.Black),
+                    new Bishop(new ChessPosition(6, 8), PlayerColor.Black),
+                    new Knight(new ChessPosition(7, 8), PlayerColor.Black),
+                    new Rook(new ChessPosition(8,   8), PlayerColor.Black),
+                    new Pawn(new ChessPosition(1,   7), PlayerColor.Black),
+                    new Pawn(new ChessPosition(2,   7), PlayerColor.Black),
+                    new Pawn(new ChessPosition(3,   7), PlayerColor.Black),
+                    new Pawn(new ChessPosition(4,   7), PlayerColor.Black),
+                    new Pawn(new ChessPosition(5,   7), PlayerColor.Black),
+                    new Pawn(new ChessPosition(6,   7), PlayerColor.Black),
+                    new Pawn(new ChessPosition(7,   7), PlayerColor.Black),
+                    new Pawn(new ChessPosition(8,   7), PlayerColor.Black),
 
 
-                    new King(new ChessPosition(5,   1), PlayerColor.WHITE),
+                    new King(new ChessPosition(5,   1), PlayerColor.White),
                 }
             };
         }
         public void RecalculateValidMoves() =>
             Pieces.AsParallel().ForAll(p => p.RecalculateValidMoves(this));
         public List<ChessPiece> Pieces { get; internal set; }
-        public ChessPiece this[ChessPosition c]
-        {
-            get => Pieces.FirstOrDefault(p => p.CurrentPosition.Equals(c));
-        }
+        public ChessPiece this[ChessPosition c] => Pieces.FirstOrDefault(p => p.CurrentPosition.Equals(c));
 
         private static readonly string[] boardText = {
             "+-------------------------------+",
@@ -131,14 +126,14 @@ namespace MyChess.OutputClasses
             "|   |   |   |   |   |   |   |   |",
             "+-------------------------------+"
         };
-        private void RenderLegend()
+        private static void RenderLegend()
         {
             Console.SetCursorPosition(0, 1);
             Console.Write("8\n\n7\n\n6\n\n5\n\n4\n\n3\n\n2\n\n1");
             Console.SetCursorPosition(1, 17);
             Console.Write("  a   b   c   d   e   f   g   h");
         }
-        private void RenderBoard()
+        private static void RenderBoard()
         {
             for (var i = 0; i < boardText.Length; i++)
             {
@@ -166,8 +161,7 @@ namespace MyChess.OutputClasses
 
         public object Clone()
         {
-            var temp = new ChessBoard();
-            temp.Pieces = Pieces.Select(p => (ChessPiece)p.Clone()).ToList();
+            var temp = new ChessBoard {Pieces = Pieces.Select(p => (ChessPiece) p.Clone()).ToList()};
             temp.RecalculateValidMoves();
             return temp;
         }

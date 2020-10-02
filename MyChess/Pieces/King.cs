@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MyChess.OutputClasses;
+﻿using MyChess.OutputClasses;
 
 namespace MyChess.Pieces
 {
@@ -26,12 +23,12 @@ namespace MyChess.Pieces
         {
             var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff));
             if(ChessBoard.IsInBoard(pos))
-                if (!board.IsProtected(pos, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE))
+                if (!board.IsProtected(pos, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White))
                     CheckAndInsert(pos, board);
         }
         public bool IsCheck(ChessBoard board)
         {
-            return board.IsProtected(CurrentPosition, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE);
+            return board.IsProtected(CurrentPosition, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White);
         }
 
         public override object Clone() => new King(CurrentPosition, Owner);

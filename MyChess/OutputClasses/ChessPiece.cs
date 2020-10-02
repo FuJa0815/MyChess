@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace MyChess.OutputClasses
 {
     public abstract class ChessPiece : IRender, IDisposable, ICloneable
     {
-        public ChessPiece(ChessPosition startingPosition, PlayerColor owner)
+        protected ChessPiece(ChessPosition startingPosition, PlayerColor owner)
         {
             CurrentPosition = startingPosition;
             Owner = owner;
@@ -28,10 +25,10 @@ namespace MyChess.OutputClasses
         public abstract char ChessChar { get; }
         public void Render()
         {
-            Console.ForegroundColor = Owner == PlayerColor.BLACK ? ConsoleColor.Black : ConsoleColor.White;
+            Console.ForegroundColor = Owner == PlayerColor.Black ? ConsoleColor.Black : ConsoleColor.White;
             Console.BackgroundColor = ConsoleColor.Gray;
             Console.SetCursorPosition((byte)((CurrentPosition.X - 1) * 4 + 2), (byte)((8 - CurrentPosition.Y) * 2 + 1));
-            Console.Write($" {(Owner == PlayerColor.WHITE ? ChessChar : (char)(ChessChar + 6))}");
+            Console.Write($" {(Owner == PlayerColor.White ? ChessChar : (char)(ChessChar + 6))}");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
         }
