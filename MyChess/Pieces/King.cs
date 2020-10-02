@@ -33,17 +33,23 @@ namespace MyChess.Pieces
             return board.ProtectedBy(CurrentPosition, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White);
         }
 
-        public bool IsCheckmate(ChessBoard board)
+        public bool CheckCheckmate(ChessBoard board)
         {
-            var checking    = GetChecking(board).Select(p=>p.CurrentPosition);
+            RecalculateValidMoves(board);
+            var possibleMoves     = board.CalculateAllPossibleMoves(Owner);
+
+            var checking          = GetChecking(board).Select(p=>p.CurrentPosition);
             var checkingPositions = checking as ChessPosition[] ?? checking.ToArray();
 
-
-            if (!checkingPositions.Any()) return false;
-            RecalculateValidMoves(board);
             if (ValidMoves.Count > 0) return false;
 
-            var possibleMoves = board.CalculateAllPossibleMoves(Owner);
+            if (!checkingPositions.Any())
+            {
+                if(possibleMoves.Count == 0)
+                    throw new RoundEndingException("Remis");
+                return false;
+            }
+
             foreach (var move in possibleMoves)
             {
                 var clone  = (ChessBoard)board.Clone();
@@ -64,7 +70,7 @@ namespace MyChess.Pieces
                 if (resolved) return false;
             }
 
-            return true;
+            throw new RoundEndingException($"{ (Owner == PlayerColor.White ? "Black" : "White") } wins!");
         }
 
         public override object Clone() => new King(CurrentPosition, Owner);
