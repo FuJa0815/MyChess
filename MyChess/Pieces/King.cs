@@ -12,16 +12,21 @@ namespace MyChess.Pieces
 
         public override void RecalculateValidMoves()
         {
-            CheckAndInsert(-1,-1);
-            CheckAndInsert(-1, 0);
-            CheckAndInsert(-1, 1);
-            CheckAndInsert( 0,-1);
-            CheckAndInsert( 0, 1);
-            CheckAndInsert( 1,-1);
-            CheckAndInsert( 1, 0);
-            CheckAndInsert( 1, 1);
+            base.RecalculateValidMoves();
+            CheckAndInsertKing(-1,-1);
+            CheckAndInsertKing(-1, 0);
+            CheckAndInsertKing(-1, 1);
+            CheckAndInsertKing( 0,-1);
+            CheckAndInsertKing( 0, 1);
+            CheckAndInsertKing( 1,-1);
+            CheckAndInsertKing( 1, 0);
         }
-
+        private void CheckAndInsertKing(int xOff, int yOff)
+        {
+            var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff));
+            if (!ChessBoard.CBoard.IsProtected(pos, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE))
+                CheckAndInsert(pos);
+        }
         public override char ChessChar => '♔';
     }
 }

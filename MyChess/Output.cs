@@ -21,6 +21,7 @@ namespace MyChess
         public void Render()
         {
             Console.SetCursorPosition(0, 19);
+            ConsoleFontHelper.ClearCurrentConsoleLine();
             Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.White;
 

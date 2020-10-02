@@ -12,6 +12,7 @@ namespace MyChess.Pieces
 
         public override void RecalculateValidMoves()
         {
+            base.RecalculateValidMoves();
             // Look right
             for (byte i = 1; ; i++)
                 if (!CheckAndInsert(0, i)) break;

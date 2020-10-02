@@ -8,6 +8,37 @@ namespace MyChess
 {
     public class ChessBoard : IRender
     {
+        public bool IsProtected(ChessPosition pos, PlayerColor by)
+        {
+            foreach(var enem in Board.Where(p=>p.Owner == by))
+            {
+                if(enem is Pawn p)
+                {
+                    ChessPosition pos1;
+                    ChessPosition pos2;
+                    if (p.Owner == PlayerColor.WHITE)
+                    {
+                        // Move up
+                        pos1 = new ChessPosition((byte)(p.CurrentPosition.X - 1), (byte)(p.CurrentPosition.Y + 1));
+                        pos2 = new ChessPosition((byte)(p.CurrentPosition.X + 1), (byte)(p.CurrentPosition.Y + 1));
+                    
+                    }
+                    else
+                    {
+                        // Move down
+                        pos1 = new ChessPosition((byte)(p.CurrentPosition.X - 1), (byte)(p.CurrentPosition.Y - 1));
+                        pos2 = new ChessPosition((byte)(p.CurrentPosition.X + 1), (byte)(p.CurrentPosition.Y - 1));
+                    }
+                    if(pos1.Equals(pos) || pos2.Equals(pos))
+                    {
+                        return false;
+                    }
+                } else if (enem.ValidMoves.Contains(pos))
+                    return true;
+            }
+            return false;
+        }
+
         private static ChessBoard _board;
         public static ChessBoard CBoard
         {

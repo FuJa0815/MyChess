@@ -12,6 +12,7 @@ namespace MyChess.Pieces
 
         public override void RecalculateValidMoves()
         {
+            base.RecalculateValidMoves();
             CheckAndInsert(-2, -1);
             CheckAndInsert(-2, 1);
 

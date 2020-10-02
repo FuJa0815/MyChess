@@ -36,9 +36,8 @@ namespace MyChess
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        protected bool CheckAndInsert(int xOff, int yOff)
+        protected bool CheckAndInsert(ChessPosition pos)
         {
-            var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff));
             if (!ChessBoard.CBoard.IsInBoard(pos)) return false;
             // TODO: CheckmateCheck
             var b = ChessBoard.CBoard[pos];
@@ -51,6 +50,8 @@ namespace MyChess
             ValidMoves.Add(pos);
             return false;
         }
+        protected bool CheckAndInsert(int xOff, int yOff) =>
+            CheckAndInsert(new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff)));
         public void Remove()
         {
             Dispose();
