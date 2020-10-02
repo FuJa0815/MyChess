@@ -1,5 +1,5 @@
 ﻿using System;
-using MyChess.AI;
+using MyChess.Ai;
 using MyChess.OutputClasses;
 
 namespace MyChess
