@@ -10,7 +10,7 @@ namespace MyChess.OutputClasses
     {
         public bool IsProtected(ChessPosition pos, PlayerColor by)
         {
-            foreach(var enem in Board.Where(p=>p.Owner == by))
+            foreach(var enem in Pieces.Where(p=>p.Owner == by))
             {
                 if(enem is Pawn p)
                 {
@@ -31,7 +31,7 @@ namespace MyChess.OutputClasses
                     }
                     if(pos1.Equals(pos) || pos2.Equals(pos))
                     {
-                        return true;
+                        return false;
                     }
                 } else if (enem.ValidMoves.Contains(pos))
                     return true;
@@ -54,7 +54,7 @@ namespace MyChess.OutputClasses
         private static ChessBoard CreateStandardChessBoard() {
             return new ChessBoard()
             {
-                Board = new List<ChessPiece>()
+                Pieces = new List<ChessPiece>()
                 {
                     new Rook(new ChessPosition(1,   1), PlayerColor.WHITE),
                     new Knight(new ChessPosition(2, 1), PlayerColor.WHITE),
@@ -76,6 +76,7 @@ namespace MyChess.OutputClasses
                     new Knight(new ChessPosition(2, 8), PlayerColor.BLACK),
                     new Bishop(new ChessPosition(3, 8), PlayerColor.BLACK),
                     new Queen(new ChessPosition(4,  8), PlayerColor.BLACK),
+                    new King(new ChessPosition(5,   8), PlayerColor.BLACK),
                     new Bishop(new ChessPosition(6, 8), PlayerColor.BLACK),
                     new Knight(new ChessPosition(7, 8), PlayerColor.BLACK),
                     new Rook(new ChessPosition(8,   8), PlayerColor.BLACK),
@@ -90,16 +91,15 @@ namespace MyChess.OutputClasses
 
 
                     new King(new ChessPosition(5,   1), PlayerColor.WHITE),
-                    new King(new ChessPosition(5,   8), PlayerColor.BLACK),
                 }
             };
         }
         public void RecalculateValidMoves() => 
-            Board.AsParallel().ForAll(p => p.RecalculateValidMoves());
-        public List<ChessPiece> Board { get; private set; }
+            Pieces.AsParallel().ForAll(p => p.RecalculateValidMoves(this));
+        public List<ChessPiece> Pieces { get; private set; }
         public ChessPiece this[ChessPosition c]
         {
-            get => Board.FirstOrDefault(p=>p.CurrentPosition.Equals(c));
+            get => Pieces.FirstOrDefault(p=>p.CurrentPosition.Equals(c));
         }
 
         private static readonly string[] boardText = {
@@ -151,7 +151,7 @@ namespace MyChess.OutputClasses
         ~ChessBoard() => Dispose();
         public void Dispose()
         {
-            Board.AsParallel().ForAll(p=>p.Dispose());
+            Pieces.AsParallel().ForAll(p=>p.Dispose());
         }
     }
 }

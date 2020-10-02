@@ -11,21 +11,21 @@ namespace MyChess.Pieces
         {
         }
 
-        public override void RecalculateValidMoves()
+        public override void RecalculateValidMoves(ChessBoard board)
         {
-            base.RecalculateValidMoves();
+            base.RecalculateValidMoves(board);
             // Look right
             for (byte i = 1; ; i++)
-                if (!CheckAndInsert(0, i)) break;
+                if (!CheckAndInsert(0, i, board)) break;
             // Look left
             for (byte i = 1; ; i++)
-                if (!CheckAndInsert(0, -i)) break;
+                if (!CheckAndInsert(0, -i, board)) break;
             // Look up
             for (byte i = 1; ; i++)
-                if (!CheckAndInsert(i, 0)) break;
+                if (!CheckAndInsert(i, 0, board)) break;
             // Look down
             for (byte i = 1; ; i++)
-                if (!CheckAndInsert(-i, 0)) break;
+                if (!CheckAndInsert(-i, 0, board)) break;
         }
 
         public override char ChessChar => '♖';

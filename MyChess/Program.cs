@@ -12,12 +12,12 @@ namespace MyChess
         {
             ConsoleFontHelper.Init();
             ChessBoard.CurrentBoard.Render();
-            ChessBoard.CurrentBoard.Board.ForEach(p => p.Render());
+            ChessBoard.CurrentBoard.Pieces.ForEach(p => p.Render());
             while (true)
             {
                 try
                 {
-                    RoundManager.MakeRound();
+                    RoundManager.MakeRound(ChessBoard.CurrentBoard);
                     Output.Out.Text = "";
                 } catch(Exception ex)
                 {

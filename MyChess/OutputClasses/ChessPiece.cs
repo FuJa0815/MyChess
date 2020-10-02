@@ -16,7 +16,7 @@ namespace MyChess.OutputClasses
         public PlayerColor Owner { get; }
         public ChessPosition CurrentPosition { get; protected set; }
         public List<ChessPosition> ValidMoves { get; protected set; } = new List<ChessPosition>();
-        public virtual void RecalculateValidMoves()
+        public virtual void RecalculateValidMoves(ChessBoard board)
         {
             ValidMoves.Clear();
         }
@@ -36,11 +36,11 @@ namespace MyChess.OutputClasses
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        protected bool CheckAndInsert(ChessPosition pos)
+        protected bool CheckAndInsert(ChessPosition pos, ChessBoard board)
         {
             if (!ChessBoard.IsInBoard(pos)) return false;
             // TODO: CheckmateCheck
-            var b = ChessBoard.CurrentBoard[pos];
+            var b = board[pos];
             if (b == default)
             {
                 ValidMoves.Add(pos);
@@ -50,12 +50,12 @@ namespace MyChess.OutputClasses
             ValidMoves.Add(pos);
             return false;
         }
-        protected bool CheckAndInsert(int xOff, int yOff) =>
-            CheckAndInsert(new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff)));
-        public void Remove()
+        protected bool CheckAndInsert(int xOff, int yOff, ChessBoard board) =>
+            CheckAndInsert(new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff)), board);
+        public void Remove(ChessBoard board)
         {
             Dispose();
-            ChessBoard.CurrentBoard.Board.Remove(this);
+            board.Pieces.Remove(this);
         }
 
         ~ChessPiece()

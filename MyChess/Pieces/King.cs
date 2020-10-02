@@ -11,27 +11,27 @@ namespace MyChess.Pieces
         {
         }
 
-        public override void RecalculateValidMoves()
+        public override void RecalculateValidMoves(ChessBoard board)
         {
-            base.RecalculateValidMoves();
-            CheckAndInsertKing(-1,-1);
-            CheckAndInsertKing(-1, 0);
-            CheckAndInsertKing(-1, 1);
-            CheckAndInsertKing( 0,-1);
-            CheckAndInsertKing( 0, 1);
-            CheckAndInsertKing( 1,-1);
-            CheckAndInsertKing( 1, 0);
+            base.RecalculateValidMoves(board);
+            CheckAndInsertKing(-1,-1, board);
+            CheckAndInsertKing(-1, 0, board);
+            CheckAndInsertKing(-1, 1, board);
+            CheckAndInsertKing( 0,-1, board);
+            CheckAndInsertKing( 0, 1, board);
+            CheckAndInsertKing( 1,-1, board);
+            CheckAndInsertKing( 1, 0, board);
         }
-        private void CheckAndInsertKing(int xOff, int yOff)
+        private void CheckAndInsertKing(int xOff, int yOff, ChessBoard board)
         {
             var pos = new ChessPosition((byte)(CurrentPosition.X + xOff), (byte)(CurrentPosition.Y + yOff));
             if(ChessBoard.IsInBoard(pos))
-                if (!ChessBoard.CurrentBoard.IsProtected(pos, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE))
-                    CheckAndInsert(pos);
+                if (!board.IsProtected(pos, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE))
+                    CheckAndInsert(pos, board);
         }
-        public bool IsCheck()
+        public bool IsCheck(ChessBoard board)
         {
-            return ChessBoard.CurrentBoard.IsProtected(CurrentPosition, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE);
+            return board.IsProtected(CurrentPosition, Owner == PlayerColor.WHITE ? PlayerColor.BLACK : PlayerColor.WHITE);
         }
 
         public override char ChessChar => '♔';
