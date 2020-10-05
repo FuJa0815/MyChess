@@ -126,8 +126,8 @@ namespace MyChess.OutputClasses
         };
         private static void RenderLegend()
         {
-            Console.SetCursorPosition(0, 1);
-            Console.Write("8\n\n7\n\n6\n\n5\n\n4\n\n3\n\n2\n\n1");
+            Console.SetCursorPosition(0, 0);
+            Console.Write(" \n8\n \n7\n \n6\n \n5\n \n4\n \n3\n \n2\n \n1");
             Console.SetCursorPosition(1, 17);
             Console.Write("  a   b   c   d   e   f   g   h");
         }
