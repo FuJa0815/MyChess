@@ -37,7 +37,9 @@ namespace MyChess
 
             // ValidMove
             toPiece?.Remove(clone);
-            fromPiece.Move(to);
+            fromPiece.Move(to, clone);
+            if (fromPiece is Pawn pawn)
+                fromPiece = pawn.TryUpgrade(clone) ?? fromPiece;
             CurrentActor = Equals(CurrentActor, Program.PlayerW) ? Program.PlayerB : Program.PlayerW;
             clone.RecalculateValidMoves();
             CurrentActor = Equals(CurrentActor, Program.PlayerW) ? Program.PlayerB : Program.PlayerW;

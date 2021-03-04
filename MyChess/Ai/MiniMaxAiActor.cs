@@ -38,13 +38,29 @@ namespace MyChess.Ai
                 var movingPiece = ChessBoard.CurrentBoard[move.From];
                 var targetPiece = ChessBoard.CurrentBoard[move.To];
                 targetPiece?.Remove(ChessBoard.CurrentBoard);
-                movingPiece.Move(move.To);
+                movingPiece.Move(move.To, ChessBoard.CurrentBoard);
+                Pawn upgradedPawn = null;
+                if (movingPiece is Pawn pawn)
+                {
+                    var tmp = pawn.TryUpgrade(ChessBoard.CurrentBoard);
+                    if (tmp != null)
+                    {
+                        movingPiece = tmp;
+                        upgradedPawn = pawn;
+                    }
+                }
 
                 var value       = min(player == PlayerColor.White ? PlayerColor.Black : PlayerColor.White, depth - 1, maxValue, beta);
                 
                 if(targetPiece != default)
                     ChessBoard.CurrentBoard.Pieces.Add(targetPiece);
-                movingPiece.Move(move.From);
+                if (upgradedPawn != null)
+                {
+                    movingPiece.Remove(ChessBoard.CurrentBoard);
+                    ChessBoard.CurrentBoard.Pieces.Add(upgradedPawn);
+                    movingPiece = upgradedPawn;
+                }
+                movingPiece.Move(move.From, ChessBoard.CurrentBoard);
 
                 if (value > maxValue)
                 {
@@ -72,13 +88,30 @@ namespace MyChess.Ai
                 var movingPiece = ChessBoard.CurrentBoard[move.From];
                 var targetPiece = ChessBoard.CurrentBoard[move.To];
                 targetPiece?.Remove(ChessBoard.CurrentBoard);
-                movingPiece.Move(move.To);
+                movingPiece.Move(move.To, ChessBoard.CurrentBoard);
+                Pawn upgradedPawn = null;
+                if (movingPiece is Pawn pawn)
+                {
+                    var tmp = pawn.TryUpgrade(ChessBoard.CurrentBoard);
+                    if (tmp != null)
+                    {
+                        movingPiece = tmp;
+                        upgradedPawn = pawn;
+                    }
+                }
+
 
                 var value = max(player == PlayerColor.White ? PlayerColor.Black : PlayerColor.White, depth - 1, alpha, minValue);
                 
                 if (targetPiece != default)
                     ChessBoard.CurrentBoard.Pieces.Add(targetPiece);
-                movingPiece.Move(move.From);
+                if(upgradedPawn != null)
+                {
+                    movingPiece.Remove(ChessBoard.CurrentBoard);
+                    ChessBoard.CurrentBoard.Pieces.Add(upgradedPawn);
+                    movingPiece = upgradedPawn;
+                }
+                movingPiece.Move(move.From, ChessBoard.CurrentBoard);
 
                 if (value < minValue)
                 {

@@ -20,7 +20,7 @@ namespace MyChess.OutputClasses
             ValidMoves.Clear();
         }
         public bool CanMove(ChessPosition target) => ValidMoves.Contains(target);
-        internal void Move(ChessPosition target)
+        internal void Move(ChessPosition target, ChessBoard chessBoard)
         {
             CurrentPosition = target;
         }

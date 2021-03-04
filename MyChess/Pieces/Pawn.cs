@@ -10,6 +10,19 @@ namespace MyChess.Pieces
         {
         }
 
+        public Queen TryUpgrade(ChessBoard board)
+        {
+            if ((Owner == PlayerColor.Black && CurrentPosition.Y == 1) ||
+                (Owner == PlayerColor.White && CurrentPosition.Y == 8))
+            {
+                Remove(board);
+                var q = new Queen(CurrentPosition, Owner);
+                board.Pieces.Add(q);
+                return q;
+            }
+            return null;
+        }
+
         public override int AiImportance => 1;
 
         public override void RecalculateValidMoves(ChessBoard board)

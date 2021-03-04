@@ -55,7 +55,7 @@ namespace MyChess.Pieces
                 var piece  = clone[move.From];
                 var target = clone[move.To];
                 target?.Remove(clone);
-                piece.Move(move.To);
+                piece.Move(move.To, clone);
                 var resolved = true;
                 foreach (var ch in checkingPositions)
                 {
