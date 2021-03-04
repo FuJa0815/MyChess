@@ -16,8 +16,11 @@ namespace MyChess
             var clone       = (ChessBoard)board.Clone();
             var king = (King)clone.Pieces.First(p => p is King && p.Owner == CurrentActor.Color);
             var kingInCheck = king.GetChecking(clone, king.CurrentPosition).Any();
-            if (!board.CalculateAllPossibleMoves(CurrentActor.Color).Any() && !kingInCheck)
+            var possibleMoves = board.CalculateAllPossibleMoves(CurrentActor.Color);
+            if (!possibleMoves.Any() && !kingInCheck)
                 throw new RoundEndingException("Remis");
+            if (king.CheckCheckmate(board, possibleMoves))
+                throw new RoundEndingException($"{king.Owner} is checkmate!");
             var move = CurrentActor.CalculateMove();
             var from = move.From;
             var to = move.To;

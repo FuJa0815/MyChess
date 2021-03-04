@@ -37,19 +37,16 @@ namespace MyChess.Pieces
             return board.ProtectedBy(pos, Owner == PlayerColor.White ? PlayerColor.Black : PlayerColor.White);
         }
 
-        public bool CheckCheckmate(ChessBoard board)
+        public bool CheckCheckmate(ChessBoard board, List<ChessMove> possibleMoves)
         {
-            board.RecalculateValidMoves();
-            var possibleMoves     = board.CalculateAllPossibleMoves(Owner);
-
             var checking          = GetChecking(board, CurrentPosition).Select(p=>p.CurrentPosition);
             var checkingPositions = checking as ChessPosition[] ?? checking.ToArray();
 
             // Nobody is checking me
             if (!checkingPositions.Any())
             {
-                if (ValidMoves.Count > 0) return false;
-                return false; // ToDo: return remis;
+                if (possibleMoves.Count > 0) return false;
+                throw new RoundEndingException("Remis");
             }
 
             foreach (var move in possibleMoves)
