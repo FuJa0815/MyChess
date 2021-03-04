@@ -45,11 +45,11 @@ namespace MyChess.Pieces
             var checking          = GetChecking(board, CurrentPosition).Select(p=>p.CurrentPosition);
             var checkingPositions = checking as ChessPosition[] ?? checking.ToArray();
 
-            if (ValidMoves.Count > 0) return false;
-
+            // Nobody is checking me
             if (!checkingPositions.Any())
             {
-                return true;
+                if (ValidMoves.Count > 0) return false;
+                return false; // ToDo: return remis;
             }
 
             foreach (var move in possibleMoves)

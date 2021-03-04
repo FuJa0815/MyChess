@@ -1,7 +1,7 @@
 ﻿using System;
 using MyChess.OutputClasses;
 
-namespace MyChess.Ai
+namespace MyChess.AI
 {
     public abstract class AiActor : Actor
     {

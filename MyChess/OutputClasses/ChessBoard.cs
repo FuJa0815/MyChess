@@ -126,8 +126,8 @@ namespace MyChess.OutputClasses
         };
         private static void RenderLegend()
         {
-            Console.SetCursorPosition(0, 0);
-            Console.Write(" \n8\n \n7\n \n6\n \n5\n \n4\n \n3\n \n2\n \n1");
+            Console.SetCursorPosition(0, 1);
+            Console.Write("8\n\n7\n\n6\n\n5\n\n4\n\n3\n\n2\n\n1");
             Console.SetCursorPosition(1, 17);
             Console.Write("  a   b   c   d   e   f   g   h");
         }
@@ -135,9 +135,13 @@ namespace MyChess.OutputClasses
         {
             for (var i = 0; i < boardText.Length; i++)
             {
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.BackgroundColor = ConsoleColor.Gray;
-                Console.SetCursorPosition(1, i);
+                Console.SetCursorPosition(0, i);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(" ");
+
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.BackgroundColor = ConsoleColor.DarkGray;
                 Console.Write(boardText[i]);
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
@@ -146,8 +150,8 @@ namespace MyChess.OutputClasses
 
         public void Render()
         {
-            RenderLegend();
             RenderBoard();
+            RenderLegend();
         }
 
         public static bool IsInBoard(ChessPosition p) => p.X >= 1 && p.X <= 8 && p.Y >= 1 && p.Y <= 8;

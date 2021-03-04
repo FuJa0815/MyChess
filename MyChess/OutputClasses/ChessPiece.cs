@@ -28,9 +28,12 @@ namespace MyChess.OutputClasses
         public void Render()
         {
             Console.ForegroundColor = Owner == PlayerColor.Black ? ConsoleColor.Black : ConsoleColor.White;
-            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.DarkGray;
             Console.SetCursorPosition((byte)((CurrentPosition.X - 1) * 4 + 2), (byte)((8 - CurrentPosition.Y) * 2 + 1));
-            Console.Write($" {(Owner == PlayerColor.White ? ChessChar : (char)(ChessChar + 6))}");
+            var chessChar               = Owner == PlayerColor.White ? ChessChar : (char) (ChessChar + 6);
+            var line                    = $" {chessChar}";
+            if (chessChar != '♟') line += " ";
+            Console.Write(line);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
         }
